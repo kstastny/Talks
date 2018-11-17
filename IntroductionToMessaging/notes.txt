@@ -1,0 +1,152 @@
+The times when we developed big monolith systems have passed. 
+Nowadays, systems are often separated into multiple distributed services. This brings us a lot of advantages but also some new challenges. One of the problems we need to solve is communication - how do these services talk to each other? How does one service inform others about changes in its state? How does one service ask another to perform some work for it?
+I will show you one approach to answering these questions in this Smart, Introduction to Messaging. The presentation will be focused more on general principles rather than a concrete technology.
+
+---------------------------------
+
+NOTES regarding talk
+ * start
+    * general overview of messaging, where it is useful
+    * not talking about specific technology, but influenced by RabbitMQ
+ * for each messaging pattern
+    * show motivation, what problem does it solve
+    * explain how that part works and explain terms
+    * show examples
+    * show demo
+
+
+
+
+PRESENTATION IMPROVEMENTS
+    http://blogs.tedneward.com/post/speaking-tips-no-speaker-notes/ !
+    http://blogs.tedneward.com/post/speaking-tips-tell-a-story/ !
+      Why do I care? Why should I listen to your talk? What’s in it for me? What pain can you spare me, or what promise can you give me, that will be worth my time in exchange?
+
+Links used for study
+  * https://www.rabbitmq.com/tutorials/amqp-concepts.html
+  * https://www.rabbitmq.com/getstarted.html
+  * https://www.iron.io/top-10-uses-for-message-queue/
+  * https://techblog.bozho.net/you-probably-dont-need-a-message-queue/
+        - nice, could use as some cons of message queues
+  * https://stackoverflow.com/questions/1035949/real-world-use-of-jms-message-queues
+  * http://mikehadlow.blogspot.com/2013/10/rabbitmq-request-response-pattern.html
+  * https://www.rabbitmq.com/tutorials/tutorial-six-dotnet.html
+  * https://www.quora.com/Why-use-message-queues-for-a-request-response-pattern-which-is-synchronous-when-queues-are-asynchronous 
+  * https://dev.to/matteojoliveau/microservices-communications-why-you-should-switch-to-message-queues--48ia solves service discovery problem
+  * https://www.enterpriseintegrationpatterns.com/patterns/messaging/RequestReplyJmsExample.html
+  * https://en.wikipedia.org/wiki/Message_queue
+  * https://stackoverflow.com/questions/20184755/practical-examples-of-how-correlation-id-is-used-in-messaging
+  * https://en.wikipedia.org/wiki/Message_broker
+  * https://www.incognito.com/tutorials/understanding-messaging-part-one-the-basics-2/
+  * deduplication https://stackoverflow.com/questions/29647656/effective-strategy-to-avoid-duplicate-messages-in-apache-kafka-consumer
+  * dead-lettering
+      * https://www.rabbitmq.com/dlx.html
+      * https://derickbailey.com/2016/03/28/dealing-with-dead-letters-and-poison-messages-in-rabbitmq/
+      * delay using dlx https://medium.com/@kiennguyen88/rabbitmq-delay-retry-schedule-with-dead-letter-exchange-31fb25a440fc
+ * https://medium.com/linagora-engineering/how-to-choose-a-message-queue-247dde46e66c
+ * https://facundoolano.wordpress.com/2016/06/26/real-world-rpc-with-rabbitmq-and-node-js/
+ * https://www.enterpriseintegrationpatterns.com/patterns/messaging/
+ * https://www.confluent.io/blog/exactly-once-semantics-are-possible-heres-how-apache-kafka-does-it/
+  * https://medium.com/@jaykreps/exactly-once-support-in-apache-kafka-55e1fdd0a35f 
+ * https://jack-vanlightly.com/blog/2017/12/15/rabbitmq-vs-kafka-part-4-message-delivery-semantics-and-guarantees
+
+
+ ASB management operations https://github.com/Azure/azure-service-bus-dotnet/issues/65
+ 
+
+Out of Scope
+------------
+* Security
+    * RabbitMQ - vhost access; Configure, Write, Read on resources (exchange, queue)
+    * Azure Service Bus - authentication, claims (Manage, Send, Listen)
+* Translation table - RabbitMQ vs Azure Service Bus terms   
+---------------------   
+   
+NOTES FROM LEARNING
+-------------------   
+Microsoft Azure Service Bus Brokered Messaging In-depth https://www.pluralsight.com/courses/microsoft-azure-service-brokered-messaging
+  * Azure Service Bus
+      * Relay Service (remote calls?), Brokered Messaging (1:1 queue), Event Hubs (telemetry for large scale, IoT, ...), Notification Hubs (1:N)
+      * this course - brokered messaging
+  * brokered messaging scenarios
+      * asynchronous processing
+          * hybrid systems (part cloud, part on-premise)
+          * Enterprise Service Bus
+          * Message Bus
+          * Internet Service Bus (?)
+      * Communication
+      * Load Leveling (sender sends data in bursts, receiver processes them at the same pace. can process everything during the day)
+      * Load Balancing (as load leveling, only one receiver cannot handle the whole load. therefore, we have more of them)
+      * High Availability (more receivers, some could fail but app still works)
+      * Temporal Decoupling (sent at one time, received and processed at another time) - saves money, receiving app runs only part of the day
+  * Azure Service Bus
+      * queues - point to point; topic - publish/subscribe
+      * features
+        * publish-subscribe, dead-lettering, message sessions, request-response correlation, message deferral (message to be processed later), scheduled enqueue, duplicate detection, TTL
+      * protocols - AMQP (default), HTTP
+  * enterprise messaging capabilities
+      * communication, security (confidentiality and integrity of messages), reliable delivery, low latency, availability (of messaging system), scalability
+  * serialization
+      * DataContract (binary serialization, no cross-platform compatibility, not possible to inspect the body in intermediary application, versioning problems - could be solved by header imo)
+      * JSON
+  * receiving options
+    * Receive and Delete - at most once delivery
+    * Peek Lock - at least once delivery, similar to ACK in RabbitMQ. lock timeout
+        * actions: Complete, Abandon, Defer (can be received using unique sequence number), Deadletter, Lock timeout expired 
+    * OnMessage
+        * multithreaded message pump (Constrained Concurrency)
+        * essentialy subscribes to callback with "OnMessageOptions", where we can specify MaxConcurrentCalls
+  * Duplicate detection
+    * on queues, topics
+    * checks for messageId
+    * duplicates are ignore
+  * publish subscribe, routing, correlation
+    * publish subscribe - topic is similar to exchange in RabbitMQ. Subscription is queue
+    * filters on subscriptions
+        * SQL filter (TSQL like expression) - against message property dictionary
+        * correlation filter, more simple, better performance
+        * all filters against properties in header. Cannot filter against body
+    * Wire Tap Pattern (defined in Enterprise Integration Patterns)
+    * Message Correlation (Enterprise Integration Patterns)
+        * grouping of messages by correlation identifier
+        * Azure Service Bus gotcha - CorrelationId used for routing, SessionId for correlation!
+        * sessions - related messages. Will be processed by the same receiver
+    * Request-Response messaging
+        * request - set ReplyToSessionId. response goes to queue that RequiresSession and replies with this sessionId
+  * poison messages, dead lettering, error handling
+    * communication problems - transient, non-transient
+        * sending messages - network error, throttling exception, internal service error in service bus, security, endpoint not found
+            * options - retry (delay for a time, then retry, up to N number of times), fail
+            * MessagingException.IsTransient, transient error handling is built-in in client API (configurable, default exponential backoff)
+                * or Transient Fault Handling Application Block (topaz) 
+        * processing messages - data integrity violation (insert existing entity), security, throttling (e.g.CosmosDB)
+            * options - abandon, dead-letter, do nothing (lock expires and message appears on queue again)
+    * dead-lettering
+        * EIP - Dead Letter Channel pattern, Invalid Channel pattern
+        * processing failure - app. repeatedly fails to process message
+        * poison message - invalid message content, impossible to process
+        * expired messages (can be dropped or dead-lettered)
+        * queues - each queue has DeadLetter sub-queue, topics - each subscription has DeadLetter sub-queue
+        * resend/terminate or just log. resend when the problem was in downstream service and is now fixed
+    * poison messages
+        * can be immediately dead-lettered, explicitly. do not wait for implicit failures (delivery count)
+    * message expiration
+        * weather info, stock quotes - do not care for old
+        * can be configured to deadLetter expired messages
+        * no reliable real time check (at the time of course recording)
+    * monitoring
+        * TODO check current support in Azure
+        * how many messages in queue? has a receiving app failed to process messages? why? are there any messaging entities that do not have active receivers?
+        * DeadLetterQueue - standard path names, static methods in client
+          * needs to use MessageReceiver (no queueClient or SubscriptionClient or what are the names) 
+  * securing service bus entities
+      * database security - use special account with lower privileges (special for each app)
+      * service bus - similar scenario. admin - RootManage SharedAccessKey. additional credentials for each app (Shared Access Signatures)
+      * Shared Access Signatures - delegated and granular policy
+            * policy name, primary and secondary key
+            * can be assigned to namespaces, queues, topics, subscriptions
+            * claims - Manage, Listen, Send
+      * avoid using RootManagedAccessKey in production
+
+
+ 
