@@ -1,0 +1,12 @@
+code {
+    color: #93a1a1;
+    background-color: transparent;
+}
+
+.reveal code {
+    font-weight: bold;
+}
+
+#speaker-controls {
+    font-size: 14px;
+}
