@@ -1,0 +1,7 @@
+STORAGE: PACKAGES
+RESTRICTION: == net47
+NUGET
+  remote: https://api.nuget.org/v3/index.json
+    Microsoft.Diagnostics.Tracing.EventSource.Redist (2.0.1)
+    RabbitMQ.Client (5.1)
+      Microsoft.Diagnostics.Tracing.EventSource.Redist (>= 1.1.28)
