@@ -4,27 +4,25 @@ I will show you one approach to answering these questions in this Smart, Introdu
 
 ---------------------------------
 
-TODOs
- * TODO review the talk and finish TODOs
- * TODO review once more the Processing Faults
- * TODO test examples on CN BOOK
- * prepare deduplication
-        * TODO prepare what to say
- * TODO prepare what to say at each slide once again
- * TODO see the previous talk video?        
-
-
----------------------------------
+video - see https://www.youtube.com/watch?v=Qmt15pqkgHg
 
 NOTES regarding talk
  * start
     * general overview of messaging, where it is useful
+    * not a talk about microservices - the messaging topic is broader
     * not talking about specific technology, but influenced by RabbitMQ
  * for each messaging pattern
     * show motivation, what problem does it solve
     * explain how that part works and explain terms
     * show examples
     * show demo
+
+ * hooks
+    * Messaging slide - explain parts of messaging, then show including "official" definitions
+    * Point-to-Point demo
+        - show load distribution, then how the Consumer can reconnect on dropped work.
+        - this is something not possible with sync. approach, improves system resilience. This allows us to increase system resilience and availability...
+
 
 
 

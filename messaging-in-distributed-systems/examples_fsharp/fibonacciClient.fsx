@@ -91,6 +91,7 @@ let requestFibAsync (conn: IConnection) (fib: int) : Task<string> =
     let consumer = EventingBasicConsumer(channel)
     consumer.Received
     |> Event.add (fun e -> 
+        //NOTE: normally we would find the taskCompletionSource by correlationId here
         e.Body |> Encoding.UTF8.GetString
         //|> (fun x -> printfn "Message for correlationId %s: %s" e.BasicProperties.CorrelationId x; x)
         |> taskCompletionSource.SetResult
@@ -113,7 +114,6 @@ let requestFibAsync (conn: IConnection) (fib: int) : Task<string> =
         basicProperties = requestProperties
     )    
 
-
     //simple timeout, using Polly would be better
     Task.WhenAny(Task.Delay(5000), taskCompletionSource.Task)
         .ContinueWith(fun (t: Task) -> 
@@ -130,18 +130,21 @@ let requestFibAsync (conn: IConnection) (fib: int) : Task<string> =
 let connection = createConnection ()
 let channel = createChannel connection
 let fib = requestFibCommand channel
-createFibListener channel |> ignore
-
-fib 15
-
 let fibAsync fib =
     let t = requestFibAsync connection fib
     t.ContinueWith(fun (x: Task<string>) -> printfn "RESULT = %s" x.Result) |> ignore
-    
+
+
+
+createFibListener channel |> ignore
+
+fib 12
+
+[1..100] |> List.iter fib
     
 fibAsync 1
 
-
+[1..50] |> List.iter fibAsync
 
 channel.Close ()
 connection.Close ()

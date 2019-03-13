@@ -60,7 +60,7 @@
 
 * **Point-to-Point** Messaging
 * **Publish/Subscribe** Messaging
-* Async **Request/Reply**
+* Async **Request-Reply**
 * *Data Streaming (Large Scale Telemetry, IoT)* - not covered
 
 ' point-to-point: Command, pub/sub: Event, Request/Reply: Query
@@ -94,9 +94,10 @@
 ### Queue
 
 * **Buffer** for storing messages
-* Each message is sent only to one consumer
+* Each message is *delivered* only to one consumer
 
 ' usually - if there is no error, e.g. network or process failure - processing reliability, delivery guarantees
+' delivered - processed and acknowledged
 ' also called a `channel`
 
 ---
@@ -113,6 +114,7 @@
 > FibRequestor  
 > FibServer
 
+' show load distribution between two consumers
 ' Show what happens when the server dies and tell about options (delivery guarantees), mention idempotency
 
 ***
@@ -121,22 +123,26 @@
 
 ![](images/Booking_1.png)
 
+' Scenario: user wants to reserve a car at particular hour (that's what brings us money!)
+' explain image, show how dependency system being down influences our action of focus (conversion)
+
 *** 
 ## High Availability
 
-* What is the availability of Booking action?
+* What is the availability of the Reservation action?
 
 ***
 
 ## High Availability
 
-* What is the availability of Booking action?
+* What is the availability of the Reservation action?
 
 **[96%](https://en.wikipedia.org/wiki/High_availability#Percentage_calculation)**
 
 `0.99 * 0.99 * 0.98 = 0.96`
 
 ' External systems decrease our availability!
+' goes from about 15 minutes/day to 1 hour per day
 
 ***
 
@@ -155,9 +161,10 @@
 
 <p class="reference">Source: <a href="https://app.pluralsight.com/library/courses/microsoft-azure-service-brokered-messaging/table-of-contents">Microsoft Azure Service Bus Brokered Messaging In-depth</a></p>
 
-' producer sends data in bursts, consumer processes them at the same pace. can process everything during the day
+' producer sends data in bursts, consumer processes them at the same pace. can process everything if average processing power >= input
 ' https://docs.microsoft.com/en-us/azure/architecture/patterns/queue-based-load-leveling
 ' Intermediating message producers and consumers with a queue means that the consuming application only has to be provisioned to be able to handle average load instead of peak load  - https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-queues-topics-subscriptions
+' example: Black Friday - everyone wants to buy. 
 
 ***
 
@@ -193,11 +200,10 @@
 
 * receives messages from producers and pushes them into queues
 * needs rules that define where to push the messages
-* you can think of it as a router
 
 
 ' necessary because we said that queue only delivers to one consumer
-' in RabbitMq the rules are defined by exchange type
+' in RabbitMq the rules are defined by exchange type (fanout, direct, topic, headers)
 ' = topic in Azure Service Bus
 ' you can also think of exchange as a router - receives the message and sends it to N other channels
 
@@ -208,6 +214,7 @@
 * car positions and events (door open, engine off, car locked)
 * chat
 * broadcast of entity changes
+* logs
 
 
 *** 
@@ -215,6 +222,9 @@
 ### **DEMO** - Publish/Subscribe
 
 > FibListener
+
+' one listener gets messages from multiple servers
+' two listeners - both get the same messages
 
 ***
 
@@ -235,6 +245,11 @@
 
 <p class="reference">Source: <a href="www.rabbitmq.com">www.rabbitmq.com</a></p>
 
+---
+### Examples
+
+* query remote data - cars available in some area
+* reserve a car with acknowledgement
 
 *** 
 
@@ -244,6 +259,7 @@
 
 ' Azure Service Bus works differently (uses SessionId to correlate request and response)    
 ' alternative: https://www.rabbitmq.com/direct-reply-to.html
+' Scale out demo - `[1..50] |> List.iter fibAsync` - see how far we get before getting timeouts (1 vs 3 servers)
 
 ***
 
@@ -261,6 +277,7 @@
 ' https://www.rabbitmq.com/tutorials/tutorial-six-dotnet.html
 ' fault tolerance - service downtime does not mean lost work, client might not even notice
 ' resilient - you will not overload the worker as the worker decides its load
+' https://stackoverflow.com/questions/37148836/what-is-service-discovery-and-why-do-you-need-it
 
 ***
 
@@ -268,7 +285,7 @@
 
 * *Command* - use Point-to-Point Messaging
 * *Event* - use Publish/Subscribe Messaging
-* *Query* - use async Request/Reply
+* *Query* - use async Request-Reply
 
 ' note that if you want command acknowledged, you have to use request/reply even if you don't really have a "query"
 
@@ -282,6 +299,7 @@
     * Expired, without consumers
 
 ' Poison (invalid) message - message with bad content, cannot even be parsed, will never be processed
+' poison message - e.g. client deployed before server, server does not understand the new format
 
 
 ***
@@ -292,13 +310,6 @@
 * Dead-Letter
 
 ***
-### Poison Message Queue
-
-![](images/EIP_InvalidMessageSolution.gif)
-
-<p class="reference">Source: <a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/InvalidMessageChannel.html">https://www.enterpriseintegrationpatterns.com/patterns/messaging/InvalidMessageChannel.html</a></p>
-
-***
 ### Dead-Letter Queue
 
 ![](images/EIP_DeadLetterChannelSolution.gif)
@@ -306,6 +317,7 @@
 <p class="reference">Source: <a href="https://www.enterpriseintegrationpatterns.com/patterns/messaging/DeadLetterChannel.html">https://www.enterpriseintegrationpatterns.com/patterns/messaging/DeadLetterChannel.html</a></p>
 
 ***
+
 ### Handling Dead-Lettered Messages
 
 * Monitor and Decide
@@ -342,9 +354,9 @@
 ***
 ### When Not to Use
 
-* simple or monolithic systems
-* mostly synchronous processing
-* little external dependencies
+* Simple or monolithic systems
+* Mostly synchronous processing
+* Few external dependencies
 
 ***
 
@@ -401,6 +413,7 @@
 * Double submit
 
 ' unreliable - you always have to assume that the network is not reliable, not just in cell phone scenarios
+' unreliable example - stuck in a full train, decide to book a car for ride back home. Suddenly you lose signal, go into a tunnel
 ' double submit - order on webshop, user double-clicks instead of single clicking
 
 ***
@@ -418,11 +431,11 @@
 ### How do you handle duplicate messages?
 
 * don't :)
-* design your Consumer to be *idempotent*
+* design your Consumers to be *idempotent*
 * deduplicate
 
 ' don't - sometimes it does not matter if you receive and handle message twice (e.g. when you clear the cache twice once in a blue moon)
-' idempotent - messages have to be designed that way. (e.g. you have to recalculate user permissions based on input data. Store time when you recalculated, when you get older event, do not recalculate)
+' idempotent - messages have to be designed that way. (e.g. you want to clear cache based on input data. Store time when you refreshed, when you get older event, do not recalculate)
 ' deduplication - usually uses unique MessageId (or hash) to filter duplicate messages. Broker support (RabbitMQ plugin, Azure Service Bus, ...) solves the duplicates on publish. Duplicates on consume you have to handle yourself (or use transactional client where possible - e.g. NServiceBus)
 
 ***
