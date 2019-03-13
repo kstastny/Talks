@@ -20,7 +20,7 @@ For more information see http://fsprojects.github.io/FsReveal/getting-started.ht
 
 ## Demo
 
-Directory `examples_csharp` contains .NET solution with examples accompanying the presentation.
+Directories `examples_csharp` and `examples_fsharp` contain examples accompanying the presentation.
 
 To run the examples, you need access to any [RabbitMQ](https://www.rabbitmq.com/) server. 
-Connection information has to be filled in project `Shared`, class `ConnectionConstants`
+Connection information has to be filled in project `Shared`, class `ConnectionConstants`.
