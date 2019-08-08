@@ -1,0 +1,38 @@
+[
+  {
+    "PrimaryName": "Aredhel",
+    "SecondaryNames": ["Me", "Karel"]
+  },
+  {
+    "PrimaryName": "Jana K.",
+    "SecondaryNames": ["Jana"]
+  },
+  {
+    "PrimaryName": "Eva",
+    "SecondaryNames": ["Eva K."]
+  },
+  {
+    "PrimaryName": "Ivča B.",
+    "SecondaryNames": ["Ivča", "Ivča N."]
+  },
+  {
+    "PrimaryName": "Marťa",
+    "SecondaryNames": ["Martina", "Martina S."]
+  },
+  {
+    "PrimaryName": "Vláďa B.",
+    "SecondaryNames": ["Vláďa"]
+  },
+  {
+    "PrimaryName": "Jonathan",
+    "SecondaryNames": [ "Jon" ]
+  },
+  {
+    "PrimaryName": "Petr B.",
+    "SecondaryNames": [ "Petr" ]
+  },
+  {
+    "PrimaryName": "Štěpánka",
+    "SecondaryNames": ["Stepanka"]
+  }
+]

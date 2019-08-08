@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Demo", "Demo\Demo.fsproj", "{2126C653-CBC9-4002-A8A4-608945242593}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Demo.FunctionApp", "Demo.FunctionApp\Demo.FunctionApp.fsproj", "{77E37E31-B151-4CB9-A074-E98F2A937549}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2126C653-CBC9-4002-A8A4-608945242593}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2126C653-CBC9-4002-A8A4-608945242593}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2126C653-CBC9-4002-A8A4-608945242593}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2126C653-CBC9-4002-A8A4-608945242593}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C3F3009-E70B-4F01-B599-2E51938FE873}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C3F3009-E70B-4F01-B599-2E51938FE873}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C3F3009-E70B-4F01-B599-2E51938FE873}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C3F3009-E70B-4F01-B599-2E51938FE873}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77E37E31-B151-4CB9-A074-E98F2A937549}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77E37E31-B151-4CB9-A074-E98F2A937549}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77E37E31-B151-4CB9-A074-E98F2A937549}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77E37E31-B151-4CB9-A074-E98F2A937549}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

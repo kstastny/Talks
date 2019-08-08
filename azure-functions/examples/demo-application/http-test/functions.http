@@ -1,0 +1,6 @@
+@api = http://localhost:7071/api
+@hostkey = f
+
+
+### Import users
+POST {{api}}/import/users?code={{hostkey}}&datefrom=2019-01-01&dateto=2019-08-01&bggusername=Aredhel&gamingGroupId=18663

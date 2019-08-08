@@ -1,0 +1,45 @@
+group Server
+    source https://api.nuget.org/v3/index.json
+    framework: netcoreapp2.2
+    storage: none
+
+    nuget FSharp.Core
+    nuget FSharp.Data
+
+    nuget TaskBuilder.fs
+
+    nuget Newtonsoft.Json
+
+    // logging
+    nuget Serilog
+    nuget Serilog.AspNetCore
+    nuget Serilog.Sinks.Console
+    nuget Serilog.Sinks.File
+    nuget Serilog.Formatting.Compact
+    nuget Destructurama.FSharp.NetCore
+
+    // Azure Functions
+    nuget Microsoft.NET.Sdk.Functions
+    nuget Microsoft.Identity.Client
+    nuget Microsoft.Extensions.Configuration
+    nuget Microsoft.Extensions.Configuration.Json
+    nuget Microsoft.Extensions.Configuration.EnvironmentVariables
+    nuget Microsoft.Extensions.Configuration.FileExtensions
+
+    nuget Microsoft.Azure.WebJobs.Extensions.Storage
+
+
+
+group Build
+    source https://api.nuget.org/v3/index.json
+    framework: netstandard2.0
+    storage: packages
+
+    nuget FSharp.Core 4.3.4 // https://github.com/fsharp/FAKE/issues/2001
+    nuget FSharp.Compiler.Tools
+    nuget Fake.Core.Target
+    nuget Fake.DotNet.Cli
+    nuget Fake.DotNet.AssemblyInfoFile
+    nuget Fake.IO.FileSystem
+    nuget Fake.Tools.GitVersion
+    nuget GitVersion.CommandLine     

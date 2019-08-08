@@ -1,0 +1,17 @@
+.fable/
+.fake/
+.vs/
+obj/
+bin/
+packages/
+paket-files/
+node_modules/
+src/Client/public/js/
+release.cmd
+release.sh
+.idea/
+*.DotSettings.user
+deploy
+/.paket/Paket.Restore.targets
+/src/Server/startup.log
+*.fsproj.user
