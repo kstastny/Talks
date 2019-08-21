@@ -66,3 +66,10 @@ aha, je to tady https://docs.microsoft.com/en-us/azure/azure-functions/manage-co
 
 
 https://serverlesslibrary.net/ - Azure Functions and Logic Apps - open source use cases
+
+
+
+Azure Storage Emulator - https://docs.microsoft.com/en-us/azure/storage/common/storage-use-emulator
+
+Queue settings - https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-queue#hostjson-settings
+TODO nastudovat zpracování, poison queue v tomto případě

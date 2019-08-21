@@ -9,6 +9,7 @@ group Server
     Microsoft.Extensions.Configuration.FileExtensions
     
     Microsoft.Azure.WebJobs.Extensions.Storage
+    WindowsAzure.Storage
 
     TaskBuilder.fs
 

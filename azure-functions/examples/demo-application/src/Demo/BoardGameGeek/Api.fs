@@ -72,6 +72,23 @@ let getPageCount (p: Plays.Plays) =
     p.Total / 100 + 1
 
 
+let downloadPlaysPage username dateFrom dateTo pIndex =
+    getPlaysUri username dateFrom dateTo pIndex
+    |> Http.createRequest System.Net.Http.HttpMethod.Get
+    |> Http.getResponse CancellationToken.None
+    
+
+let parsePlays xmlString =
+    xmlString
+    |> Plays.Parse
+    |> Mapping.xmlPlaysToPlays
+
+
+let parseUsername xmlString =
+    xmlString
+    |> Plays.Parse
+    |> (fun x -> x.Username)
+
 
 let getPlays cancellationToken username (dateFrom: Date) (dateTo: Date) =
 

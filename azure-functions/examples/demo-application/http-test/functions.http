@@ -4,3 +4,7 @@
 
 ### Import users
 POST {{api}}/import/users?code={{hostkey}}&datefrom=2019-01-01&dateto=2019-08-01&bggusername=Aredhel&gamingGroupId=18663
+
+
+### Run Import
+POST {{api}}/import/run?code={{hostkey}}&datefrom=2018-01-01&dateto=2019-08-01&bggusername=Aredhel&gamingGroupId=18663

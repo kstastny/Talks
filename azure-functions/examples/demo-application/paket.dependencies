@@ -27,6 +27,7 @@ group Server
     nuget Microsoft.Extensions.Configuration.FileExtensions
 
     nuget Microsoft.Azure.WebJobs.Extensions.Storage
+    nuget WindowsAzure.Storage 9.3.1
 
 
 

@@ -50,6 +50,9 @@ TODO triggers, inputs, outputs
 TODO versions v1 .NET Framework, v2 .NET Core
 TODO Azure Portal - good for exploration, also show
 
+TODO Azure Functions cons
+    * various DLL incompatibilities and breaking changes, e.g. //needs Microsoft.WindowsAzure.Storage.dll 9.3.1, workaround here https://github.com/Azure/azure-functions-host/issues/3784.
+
 ***
 
 # Azure Functions
