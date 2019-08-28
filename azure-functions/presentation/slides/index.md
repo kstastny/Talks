@@ -14,54 +14,59 @@
 
 ## Outline
 
-TODO create slides for stuff below
+* Serverless
+* What are Azure Functions
+* Implementing Azure Functions
+    * Function App
+    * Triggers
+    * Bindings
+* Deployment
+* Monitoring    
 
-* # Azure Functions - what are they
-* -- Serverless definition, pros and cons - incuded above
-* # when to use functions (glue or main app)
-* TODO Functions - how to create (demo, then show prerequisities - links included)
-* TODO Function App
-* TODO Functions 
-    - # function runtime versions, supported languages
-    - TODO Triggers, Input and Output Bindings
-            TODO demo - function triggered from queue, saves to blob or something like that 
-            use https://hub.docker.com/r/microsoft/azure-storage-emulator/ or Azurite (Emulator je kompletnější a na SQL Express i běží zdá se)
-            or BlobTrigger - if there's new file, process it - parse and extract contents
-              NOTE: BlobTrigger procesuje i bloby, které jsou uložené, ale function host je neviděl!
 
-            TODO demo https://simonholman.blog/azure-functions-with-imperative-bindings/
-    - TODO settings    
-    - TODO authentication
-    - TODO deployment
-    - TODO monitoring
-* TODO DEMO - whole application - neme-import, how it can be structured, how does it work (tailored for demo)    
-        TODO show recommended application structure (later, with whole demo) - functions are just thin layer that will call business logic, same as if we used Web API or Giraffe or whatever
 * TODO PREPARE WHAT TO SAY EXACTLY
 
--- what is serverless, ideas behind it, pros, cons
-TODO supported languages, function runtimes
-TODO why should we use them, pros, cons of functions
-TODO main usecases - glue or application itself. will talk in context of glue. replaces WebJobs, much easier
-    TODO examples (from my experience)
-            - automatic log cleaning (DB and files from app service) 
-            - automatic restart of app service on alarm
-    TODO other examples - talk to Landy, Roman        
-TODO triggers, inputs, outputs
-TODO versions v1 .NET Framework, v2 .NET Core
-TODO Azure Portal - good for exploration, also show
-
-TODO Azure Functions cons
-    * various DLL incompatibilities and breaking changes, e.g. //needs Microsoft.WindowsAzure.Storage.dll 9.3.1, workaround here https://github.com/Azure/azure-functions-host/issues/3784.
 
 ***
 
-# Azure Functions
+## Serverless
+
+* Cloud provider fully manages server infrastructure
+* You only worry about application code and business logic
+
+' https://bravenewgeek.com/serverless-on-gcp/
+' obligatory definition of serverless. who doesn't know what is serverless? who knows? skip or not
+
+***
+
+### Serverless Flavors
+
+* Compute
+* Databases
+* Storage
+* Message Queues
+
+
+' Compute - Functions, Lambda; Databases - SQL, CosmosDb; Storage - BlobStorage, S3;
+
+***
+
+### Serverless benefits
+
+* Focus on providing value to your customer
+* "outsource" operations related tasks
+* automatic scaling, fault tolerance
+
+***
+
+## Azure Functions
 
 * Serverless computing service on Azure
 * Function as a Service 
-* Stateless
+* Stateless*
 * Event-Driven
  
+ <p class="reference">*except Durable Functions</p>
 
 ' FaaS - run code without managing own server/container or own long lived application
 ' no worry about infrastructure - just write function, define how to run it and run. No need for complex deployment process
@@ -70,7 +75,7 @@ TODO Azure Functions cons
 
 ***
 
-## Benefits
+### Benefits
 
 * no need to maintain infrastructure
 * eliminated boilerplate
@@ -83,50 +88,79 @@ TODO Azure Functions cons
 ' Azure Web Apps - Functions based on WebJobs. Kudu, CI etc. available
 ' autoscaling - you cannot over or under provision
 
-## Disadvantages
+***
+
+### Disadvantages
 
 * vendor lock-in
 * performance - extra latency when spinned down (TODO TEST IF ITS TRUE)
 * monitoring and debugging resource consumption ?
 * not for everyone
+* sometimes shows us what was DLL Hell
+    * TODO UČESAT SLIDE
+    * various DLL incompatibilities and breaking changes, e.g. //needs Microsoft.WindowsAzure.Storage.dll 9.3.1, workaround here https://github.com/Azure/azure-functions-host/issues/3784.
 
 ' performance -
 ' TODO other cons? https://en.wikipedia.org/wiki/Serverless_computing
 
 ***
-TODO remove these notes
-    * Azure Functions - Functions as a Service, each has Trigger, Input and Output Bindings (Blob Storage, CosmosDb, SendGrid)
-            * one function can have multiple bindings, `in` or `out` parameters
-            TODO think of example, https://docs.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings
-            e.g. Mark Heath - function is HTTP Triggered but using binding reads data from Table Storage
-
-* Durable Functions? do not include
-
-***
 
 ## Use Cases
  
-* Glue
-* Full backend
+* System Glue
+* Full backend application
 * Automating processes
 * Scheduled jobs
 * Dynamic workloads
 
 
-' glue - simple to develop, has to be small and flexible
+' glue - simple to develop, has to be small and flexible. glue - integration of services, apps apod.
 ' Automating processes - e.g. webhook for automatic restart on alarm
 ' Dynamic workloads - because of autoscaling
+' replaces webjobs
+
+***
+
+## Examples
+
+* Automatic log cleaning
+* Automatic restart of App Service on alarm (webhook)
+
+TODO other examples (ask Roman, Landy) - I am working on the app below, then ask
+
+' log cleaning - DB and files from app service
 
 
 ***
 
 ### **DEMO** Create Function (F#)
 
-TODO explain - possible in portal but good just for demo purposes, therefore we won't be doing that
-TODO just simple hello world
+> HTTP Hello world
 
-TODO only F#. On Smart, just show Rider for F#, show CLI for C#?
-on FSharping show alternatives and their problems (VS Code, CLI)
+' possible in portal but good just for demo purposes, therefore we won't be doing that
+' TODO PREPARE during the talk - how to do it, in Demo.FunctionApp (or new solution). call the function
+' TODO also show from CLI? If there's time for it, prepare. just Hello world, rest in Rider
+
+***
+
+### Azure Functions prerequisities
+
+* Command line - [Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local)
+* VS Code - Core Tools + [Azure Functions Extension](https://github.com/Microsoft/vscode-azurefunctions)
+* Visual Studio - [Azure Functions and WebJobs Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs)
+* JetBrains Rider - [Azure Toolkit](https://plugins.jetbrains.com/plugin/11220-azure-toolkit-for-rider)
+
+***
+
+### Function App
+
+* "project" for Azure Functions
+* multiple functions
+* shared configuration
+* deployed as one unit
+
+' you can think of it as your "app service" or "web" that has the functionality
+' show in Azure Portal
 
 ***
 
@@ -137,8 +171,8 @@ on FSharping show alternatives and their problems (VS Code, CLI)
     * recommended version
     * support for some languages dropped (bash, php, F# Scripts)
 
-
 see https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
+
 ' I will show v2 only
 
 ***
@@ -163,6 +197,7 @@ see https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
 * Azure Queues
 * ...
 
+' we already saw HTTP Trigger, I will present more later
 
 ***
 
@@ -173,6 +208,11 @@ see https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
 * function may have multiple bindings
 * `input`, `output` or both
 * abstracts access to other services
+
+
+' one function can have multiple bindings, `in` or `out` parameters
+TODO think of example, https://docs.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings
+e.g. Mark Heath - function is HTTP Triggered but using binding reads data from Table Storage
 
 ***
 
@@ -185,16 +225,32 @@ see https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
 
 ***
 
-### Function App
+### **DEMO** Function Triggers and Bindings
 
-* holds related Azure Functions
+> Getting Statistics from [BGG](https://boardgamegeek.com/geekplay.php?userid=199696&redirect=1&startdate=&dateinput=&dateinput=&enddate=&action=bydate&subtype=boardgame)
 
-
-' you can think of it as your "app service" or "web" that has the functionality
-' show in Azure Portal
+' problem - get data about games from BoardGameGeek and somehow process them
 
 ***
 
+TODO DEMO APPLICATION - IMAGE how it should look in the end, draw.io with Azure icons
+
+ * locally - needs Azure Storage Emulator (show). or develop against azure
+        * https://hub.docker.com/r/microsoft/azure-storage-emulator/
+        * or Azurite (https://github.com/Azure/Azurite)
+ * implement HTTP Trigger with [<Out>] queue binding
+ * implement Queue Trigger with Blob binding
+        * basic + then show imperative bindings. TODO PREPARE THE CODE
+            TODO https://simonholman.blog/azure-functions-with-imperative-bindings/
+ * rest just paste and describe - show attribute on "return" + alternative Table Storage
+ * show recommended application structure
+        - functions are just thin layer that will call business logic, same as if we used Web API or Giraffe or whatever
+
+' HTTP Launcher - will queue the task. Then queue will trigger download, then blob will be parsed and result goes to TableStorage
+
+' NOTE: BlobTrigger processes blobs that were already present but the trigger did not see them before
+
+***
 
 ### **DEMO** Function Settings
 
@@ -210,18 +266,6 @@ TODO explain how to configure locally, how to configure when deployed, how to ac
 
 ***
 
-### Authentication
-
-
-
-TODO show authentication modes and options (header, `x-functions-key`)
-    TODO discuss - mostly suitable for development, should implement better auth (where was this written? meaning OAuth and such?)
-
-TODO test that it works as documented (might not, see https://markheath.net/post/managing-azure-function-keys), let them know
-    * `system` requires master key
-
-
-***
 
 ### Deployment
 
@@ -231,11 +275,28 @@ TODO discuss deployment options
     * from CLI - demo, not feasible for real projects
 TODO pricing modes - under existing app service, or consumption based    
 
+TODO show deployment and show Azure Portal
+
+***
+
+### Authentication
+
+TODO show authentication modes and options (header, `x-functions-key`)
+    TODO discuss - mostly suitable for development, should implement better auth (where was this written? meaning OAuth and such?)
+
+TODO test that it works as documented (might not, see https://markheath.net/post/managing-azure-function-keys), let them know
+    * `system` requires master key
+
+
+
+
 *** 
 ### Monitoring
 
 TODO how to monitor, where are the logs, where are the launches, Function console
 TODO what if they are not visible?
+
+TODO show logs in Azure Portal, logs in Table Storage or where they are
 
 ***
 
@@ -246,5 +307,9 @@ TODO what if they are not visible?
 ## Sources
 
 * You can find this talk on my github https://github.com/kstastny/Talks
+
+* Develop in F# using VS Code
+    * [Precompiled F#](https://discardchanges.com/post/building-azure-functions-with-precompiled-fsharp/)
+    * [F# Scripts](https://discardchanges.com/post/building-azure-functions-with-fsharp-and-vscode/1-setup/)
 
 * TODO - Gojko, MS documentation etc.

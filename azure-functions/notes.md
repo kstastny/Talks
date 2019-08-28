@@ -1,5 +1,13 @@
+Azure Functions
+
+Azure Functions are Microsoft's version of serverless compute. They are an Azure service that enables you to run code without explicitly provisioning or managing infrastructure. You need neither physical nor virtual servers, not even containers to run them. Just you and the code. And your Azure account :)
+
+I will show you scenarios where Azure Functions can simplify your life as a developer but also how and when they can (sometimes) complicate it. You will see when it is useful to consider using them, how can you go about implementing them and what problems you might encounter along the way.
+
+
+
+---------------------
 poznámky pro příště
- * Do prace nahradni triko, hlavne kdyz bude talk nebo tak
  * Meetup - priste ne tak kontrastni pozadi (může být i ve tmě, takže VS code předem na solarized dark, obrázky v přednášce ne bílé, ale aspoň trochu šedé pozadí)
 
 
@@ -35,7 +43,7 @@ poznámky pro příště
      * AzureStorageEmulator.exe  init, s parametrem -inprocess
      * emulator start
      * => stále stejná chyba, vzdávám to a připojím se k Azure.
-     * našel jsem logy - problém je, že se nevytvoří tabulky. hm, hm, hm. a init nefunguje
+     * našel jsem logy - problém je, že se nevytvoří tabulky. hm, hm, hm. a init nefunguje - problém byl v tom, že nefunguje s LocalDB
      
 
 
