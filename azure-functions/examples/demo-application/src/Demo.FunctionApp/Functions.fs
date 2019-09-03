@@ -171,6 +171,7 @@ module Functions =
                 playersTable.PartitionKey <- partitionKey
                 playersTable.Players <- players |> List.choose (fun x -> x.Name)
                 
+                //https://microsoft.github.io/AzureTipsAndTricks/blog/tip85.html
                 let retrieve = TableOperation.Retrieve<PlayersTable2>(partitionKey, rowKey);
                 let! retrieveResult = table.ExecuteAsync(retrieve)
                 let operation =

@@ -87,10 +87,11 @@
 ' pricing - you pay only when the function runs (pay as you go). optionally also dedicated plan. Premium plan in preview, see https://docs.microsoft.com/en-us/azure/azure-functions/functions-scale
 ' Azure Web Apps - Functions based on WebJobs. Kudu, CI etc. available
 ' autoscaling - you cannot over or under provision
+    TODO prepare a few notes to autoscaling - there are still limits per Function App, no silver bullet
 
 ***
 
-### Disadvantages
+### Drawbacks
 
 * vendor lock-in
 * performance - extra latency when spinned down (TODO TEST IF ITS TRUE)
@@ -99,7 +100,9 @@
 * sometimes shows us what was DLL Hell
     * TODO UČESAT SLIDE
     * various DLL incompatibilities and breaking changes, e.g. //needs Microsoft.WindowsAzure.Storage.dll 9.3.1, workaround here https://github.com/Azure/azure-functions-host/issues/3784.
+* no in-server state
 
+' TODO see also https://martinfowler.com/articles/serverless.html#drawbacks for stuff to talk about
 ' performance -
 ' TODO other cons? https://en.wikipedia.org/wiki/Serverless_computing
 
@@ -252,41 +255,80 @@ TODO DEMO APPLICATION - IMAGE how it should look in the end, draw.io with Azure 
 
 ***
 
+
+### Deployment
+
+* Manual
+    * CLI Tooling
+    * IDE Tooling (Visual Studio, VS Code, Rider)
+* Automated
+    * Azure DevOps
+    * Deployment Center
+
+' plenty of options, I will show manual ones
+' CLI, IDE - nice for testing before CI is set
+' CI - show Deployment Center or Azure DevOps (same as deploying App Service)        
+' Deployment Center - needs special structure of app. https://docs.microsoft.com/en-us/azure/azure-functions/functions-continuous-deployment 
+
+***
+
+### **DEMO** Deployment
+
+* JetBrains Rider
+* CLI
+
+'CLI `func azure functionapp publish functionsdemo82` (needs `az` or `Az.Accounts` PowerShell module. login with `az login`)
+
+***
+
+### Hosting plans
+
+* Consumption
+* App Service Plan
+* Premium (preview)
+
+' pricing differes
+' App Service - you have to set the scaling correctly but you pay nothing extra ("only" for the app service plan)
+' Premium - consumption with extra features (no cold start, unlimited execution duration, ...)
+' https://docs.microsoft.com/en-us/azure/azure-functions/functions-scale
+' Consumption plan - can be limited by daily usage quota. https://azure.microsoft.com/is-is/pricing/details/functions/
+' minimum execution time and memory for a single function execution is 100 ms and 128 mb respectively (i.e. one run is minimum of 1/80 GB-sec)
+
+
+***
+
 ### **DEMO** Function Settings
 
 * Configurable the same way as Azure App Service
     * e.g. `local.settings.json`
     * Azure portal
 
-TODO `local.settings.json` how to copy during build? and not include
-  include, commit sample and delete on publish
 
-' TODO show in nemestats-import application or some other demo?
-TODO explain how to configure locally, how to configure when deployed, how to access configuration
+' TODO explain how to configure locally, how to configure when deployed, how to access configuration
+' TODO prepare example - see SwitchMonitoring getConfigurationRoot (ConfigurationBuilder)
 
 ***
 
+### Auth
 
-### Deployment
+* Function Keys
+    * Host Keys
+    * Function Keys
+* App Service Authentication / Authorization ( Authentication Providers)
+* Azure API Management (allows IP restrictions)
+* Azure App Service environment
+* custom Auth
+* TODO application gateway?
 
-TODO discuss deployment options
-    * from Azure side - can take from github etc.
-    * Azure DevOps - deploy as normal AppService
-    * from CLI - demo, not feasible for real projects
-TODO pricing modes - under existing app service, or consumption based    
-
-TODO show deployment and show Azure Portal
-
-***
-
-### Authentication
-
-TODO show authentication modes and options (header, `x-functions-key`)
-    TODO discuss - mostly suitable for development, should implement better auth (where was this written? meaning OAuth and such?)
+' Function Keys are meant for development
+' https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook#authorization-keys
+' Host - Master key - Admin Access
+' Query string or `x-functions-key` header
+' Authentication Providers - same as App Services (Azure AD, MS Account, Google, Facebook, Twitter, custom)
+' custom https://www.ben-morris.com/custom-token-authentication-in-azure-functions-using-bindings/
 
 TODO test that it works as documented (might not, see https://markheath.net/post/managing-azure-function-keys), let them know
     * `system` requires master key
-
 
 
 
@@ -294,9 +336,18 @@ TODO test that it works as documented (might not, see https://markheath.net/post
 ### Monitoring
 
 TODO how to monitor, where are the logs, where are the launches, Function console
+    * some logs are in Table storage - show
+    * or Log Streaming
+    * normally logs go to AppInsights if configured, otherwise some basic info is in Portal itself
+        * appInsights | Logs (Analytics) | traces
+    TODO show both to demo difference
 TODO what if they are not visible?
 
 TODO show logs in Azure Portal, logs in Table Storage or where they are
+TODO AppInsights, see https://docs.microsoft.com/en-us/azure/azure-functions/functions-monitoring
+
+TODO logging https://stackoverflow.com/questions/53405020/configure-loglevel-of-azure-function-using-environment-variables
++ https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.loglevel?view=aspnetcore-2.2
 
 ***
 

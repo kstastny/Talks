@@ -76,6 +76,9 @@ aha, je to tady https://docs.microsoft.com/en-us/azure/azure-functions/manage-co
 https://serverlesslibrary.net/ - Azure Functions and Logic Apps - open source use cases
 
 
+https://martinfowler.com/articles/serverless.html#unpacking-faas
+   great long article
+
 
 Azure Storage Emulator - https://docs.microsoft.com/en-us/azure/storage/common/storage-use-emulator
 
