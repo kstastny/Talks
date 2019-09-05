@@ -9,7 +9,6 @@
 # Azure Functions
 
 
-
 ***
 
 ## Outline
@@ -22,10 +21,6 @@
     * Bindings
 * Deployment
 * Monitoring    
-
-
-* TODO PREPARE WHAT TO SAY EXACTLY
-
 
 ***
 
@@ -51,11 +46,11 @@
 
 ***
 
-### Serverless benefits
+### Serverless Benefits
 
 * Focus on providing value to your customer
-* "outsource" operations related tasks
-* automatic scaling, fault tolerance
+* "Outsource" operations related tasks
+* Automatic scaling, fault tolerance
 
 ***
 
@@ -77,34 +72,31 @@
 
 ### Benefits
 
-* no need to maintain infrastructure
-* eliminated boilerplate
-* rapid and simple development
-* lower cost
-* automated scaling
-* all the power of Azure Web Apps
+* No need to maintain infrastructure
+* Eliminated boilerplate
+* Rapid and simple development
+* Lower cost
+* Automated scaling
+* All the power of Azure Web Apps
 
 ' pricing - you pay only when the function runs (pay as you go). optionally also dedicated plan. Premium plan in preview, see https://docs.microsoft.com/en-us/azure/azure-functions/functions-scale
 ' Azure Web Apps - Functions based on WebJobs. Kudu, CI etc. available
 ' autoscaling - you cannot over or under provision
-    TODO prepare a few notes to autoscaling - there are still limits per Function App, no silver bullet
+
 
 ***
 
 ### Drawbacks
 
-* vendor lock-in
-* performance - extra latency when spinned down (TODO TEST IF ITS TRUE)
-* monitoring and debugging resource consumption ?
-* not for everyone
-* sometimes shows us what was DLL Hell
-    * TODO UČESAT SLIDE
-    * various DLL incompatibilities and breaking changes, e.g. //needs Microsoft.WindowsAzure.Storage.dll 9.3.1, workaround here https://github.com/Azure/azure-functions-host/issues/3784.
-* no in-server state
+* Vendor lock-in
+* Performance - cold start
+* Not for everyone
+* DLL Hell reminders
+* No in-server state
+* Security - bigger attack vector than single app
 
-' TODO see also https://martinfowler.com/articles/serverless.html#drawbacks for stuff to talk about
-' performance -
-' TODO other cons? https://en.wikipedia.org/wiki/Serverless_computing
+' cold start - https://mikhail.io/serverless/coldstarts/azure/
+' https://martinfowler.com/articles/serverless.html#drawbacks for stuff to talk about
 
 ***
 
@@ -128,8 +120,7 @@
 
 * Automatic log cleaning
 * Automatic restart of App Service on alarm (webhook)
-
-TODO other examples (ask Roman, Landy) - I am working on the app below, then ask
+* Automatic data import
 
 ' log cleaning - DB and files from app service
 
@@ -141,12 +132,10 @@ TODO other examples (ask Roman, Landy) - I am working on the app below, then ask
 > HTTP Hello world
 
 ' possible in portal but good just for demo purposes, therefore we won't be doing that
-' TODO PREPARE during the talk - how to do it, in Demo.FunctionApp (or new solution). call the function
-' TODO also show from CLI? If there's time for it, prepare. just Hello world, rest in Rider
 
 ***
 
-### Azure Functions prerequisities
+### Azure Functions Prerequisities
 
 * Command line - [Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local)
 * VS Code - Core Tools + [Azure Functions Extension](https://github.com/Microsoft/vscode-azurefunctions)
@@ -157,10 +146,10 @@ TODO other examples (ask Roman, Landy) - I am working on the app below, then ask
 
 ### Function App
 
-* "project" for Azure Functions
-* multiple functions
-* shared configuration
-* deployed as one unit
+* "Project" for Azure Functions
+* Multiple functions
+* Shared configuration
+* Deployed as one unit
 
 ' you can think of it as your "app service" or "web" that has the functionality
 ' show in Azure Portal
@@ -207,15 +196,13 @@ see https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
 ### Function Bindings
 
 * Allow connecting function to another resource
-* optional
-* function may have multiple bindings
+* Optional
+* Function may have multiple bindings
 * `input`, `output` or both
-* abstracts access to other services
+* Abstracts access to other services
 
 
-' one function can have multiple bindings, `in` or `out` parameters
-TODO think of example, https://docs.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings
-e.g. Mark Heath - function is HTTP Triggered but using binding reads data from Table Storage
+' one function can have multiple bindings, `in` or `out` parameters https://docs.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings
 
 ***
 
@@ -236,22 +223,14 @@ e.g. Mark Heath - function is HTTP Triggered but using binding reads data from T
 
 ***
 
-TODO DEMO APPLICATION - IMAGE how it should look in the end, draw.io with Azure icons
+#### Demo pipeline
 
- * locally - needs Azure Storage Emulator (show). or develop against azure
-        * https://hub.docker.com/r/microsoft/azure-storage-emulator/
-        * or Azurite (https://github.com/Azure/Azurite)
- * implement HTTP Trigger with [<Out>] queue binding
- * implement Queue Trigger with Blob binding
-        * basic + then show imperative bindings. TODO PREPARE THE CODE
-            TODO https://simonholman.blog/azure-functions-with-imperative-bindings/
- * rest just paste and describe - show attribute on "return" + alternative Table Storage
- * show recommended application structure
-        - functions are just thin layer that will call business logic, same as if we used Web API or Giraffe or whatever
+![](images/demo-functions.png)
+
 
 ' HTTP Launcher - will queue the task. Then queue will trigger download, then blob will be parsed and result goes to TableStorage
-
 ' NOTE: BlobTrigger processes blobs that were already present but the trigger did not see them before
+
 
 ***
 
@@ -277,7 +256,7 @@ TODO DEMO APPLICATION - IMAGE how it should look in the end, draw.io with Azure 
 * JetBrains Rider
 * CLI
 
-'CLI `func azure functionapp publish functionsdemo82` (needs `az` or `Az.Accounts` PowerShell module. login with `az login`)
+' CLI `func azure functionapp publish functionsdemo82` (needs `az` or `Az.Accounts` PowerShell module. login with `az login`)
 
 ***
 
@@ -303,51 +282,60 @@ TODO DEMO APPLICATION - IMAGE how it should look in the end, draw.io with Azure 
     * e.g. `local.settings.json`
     * Azure portal
 
+' show how to read configuration in demo app
+' show local.settings.json. Show settings in portal
 
-' TODO explain how to configure locally, how to configure when deployed, how to access configuration
-' TODO prepare example - see SwitchMonitoring getConfigurationRoot (ConfigurationBuilder)
 
 ***
 
-### Auth
+### Securing HTTP Functions
 
 * Function Keys
     * Host Keys
     * Function Keys
-* App Service Authentication / Authorization ( Authentication Providers)
-* Azure API Management (allows IP restrictions)
-* Azure App Service environment
-* custom Auth
-* TODO application gateway?
+* IP Whitelisting
 
 ' Function Keys are meant for development
 ' https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook#authorization-keys
 ' Host - Master key - Admin Access
 ' Query string or `x-functions-key` header
+' Gateway - IP whitelisting https://docs.microsoft.com/en-US/azure/app-service/app-service-ip-restrictions
+' http://blog.aakashsharma.me/azure/2018/01/06/azure-functions-restricting-public-access-and-ip/
+' IP whitelisting - CIDR format https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing
+
+
+
+****
+
+### Securing HTTP Functions
+
+* App Service Authentication / Authorization (Authentication Providers)
+* Azure API Management (APIM)
+* Azure App Service Environment (ASE)
+* Any other Gateway
+* custom Authentication and Authorization
+
+' Gateway - whitelist access to function for gateway IP, auth on gateway side
+' https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook#secure-an-http-endpoint-in-production
 ' Authentication Providers - same as App Services (Azure AD, MS Account, Google, Facebook, Twitter, custom)
 ' custom https://www.ben-morris.com/custom-token-authentication-in-azure-functions-using-bindings/
-
-TODO test that it works as documented (might not, see https://markheath.net/post/managing-azure-function-keys), let them know
-    * `system` requires master key
 
 
 
 *** 
 ### Monitoring
 
-TODO how to monitor, where are the logs, where are the launches, Function console
-    * some logs are in Table storage - show
-    * or Log Streaming
-    * normally logs go to AppInsights if configured, otherwise some basic info is in Portal itself
-        * appInsights | Logs (Analytics) | traces
-    TODO show both to demo difference
-TODO what if they are not visible?
+* AppInsights
+* Azure Portal - **Monitor**
+* Log Streaming
 
-TODO show logs in Azure Portal, logs in Table Storage or where they are
-TODO AppInsights, see https://docs.microsoft.com/en-us/azure/azure-functions/functions-monitoring
 
-TODO logging https://stackoverflow.com/questions/53405020/configure-loglevel-of-azure-function-using-environment-variables
-+ https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.loglevel?view=aspnetcore-2.2
+' LogStreaming - need to enable `fileLoggingMode` in host.json
+' Function execution logs are stored in Table storage. It is developers responsibility to remove those? see also https://markheath.net/post/three-ways-view-error-logs-azure-functions
+' AppInsights, see https://docs.microsoft.com/en-us/azure/azure-functions/functions-monitoring
+
+' logging https://stackoverflow.com/questions/53405020/configure-loglevel-of-azure-function-using-environment-variables
+' + https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.loglevel?view=aspnetcore-2.2
 
 ***
 
@@ -363,4 +351,5 @@ TODO logging https://stackoverflow.com/questions/53405020/configure-loglevel-of-
     * [Precompiled F#](https://discardchanges.com/post/building-azure-functions-with-precompiled-fsharp/)
     * [F# Scripts](https://discardchanges.com/post/building-azure-functions-with-fsharp-and-vscode/1-setup/)
 
-* TODO - Gojko, MS documentation etc.
+* [Designing for the Serverless Age • Gojko Adzic](https://www.youtube.com/watch?v=w7X4gAQTk2E&t=2s)
+* [Azure Functions Documentation](https://docs.microsoft.com/en-us/azure/azure-functions/)

@@ -2,6 +2,7 @@ module NemeStats.Import.FunctionApp.Functions
 
 open System
 open System.IO
+open System.Runtime.InteropServices
 
 open FSharp.Control.Tasks.V2
 
@@ -10,20 +11,18 @@ open Microsoft.Azure.WebJobs
 open Microsoft.Azure.WebJobs.Extensions.Http
 open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.Logging
+open Microsoft.Extensions.Configuration
+
+open Microsoft.WindowsAzure.Storage.Table
 
 open Newtonsoft.Json
 
-open System.Threading
-
-open FSharp.Control.Rop
-open Microsoft.Azure.WebJobs
-open Microsoft.WindowsAzure.Storage.Table
-open System.Runtime.InteropServices
-open System.Text.Unicode
 open NemeStats.Import
 open NemeStats.Import.BoardGameGeek
 open NemeStats.Import.Importer
 open NemeStats.Import.NemeStats
+
+open Demo.FunctionApp
 
 module Functions =
     
@@ -38,10 +37,19 @@ module Functions =
             //TODO error handling
             Id = queryParam |> Int32.Parse
         }
+        
+    let private getConfigurationRoot (context: Microsoft.Azure.WebJobs.ExecutionContext) =
+        (ConfigurationBuilder())
+            .SetBasePath(context.FunctionAppDirectory)
+            .AddJsonFile("local.settings.json", true)
+            .AddEnvironmentVariables()
+            .Build();        
     
         
     [<Literal>]
     let private ImportQueue = "importQueue"
+    
+    //TODO all connections are the same, it is just StorageConnection
     [<Literal>]        
     let private QueuesConnection = "AzureWebJobsStorage"
     [<Literal>]        
@@ -53,26 +61,41 @@ module Functions =
     let runImportHTTP
         ([<HttpTrigger(AuthorizationLevel.Function, "post", Route = "import/run")>]req: HttpRequest)
         ([<Queue(ImportQueue, Connection = QueuesConnection)>] [<Out>] queueMessage: ImportParameters outref)
+        (context: Microsoft.Azure.WebJobs.ExecutionContext)
         (log: ILogger) =
         
         let q x = queryParam x req 
       
-        match q "bggusername", q "gamingGroupId", q "datefrom", q "dateto" with
-          | (Some bgguser, Some groupId, Some dateFrom, dateTo) ->
+        match q "bggusername", q "datefrom", q "dateto" with
+          | (Some bgguser, Some dateFrom, dateTo) ->
 
-              //TODO error handling, parameter validation (applicative, see Config handling)
               queueMessage <-
                   {
                     BggUsername = bgguser
                     DateFrom = Date.fromString dateFrom |> Option.get
                     DateTo = dateTo |> Option.bind Date.fromString |> Option.defaultValue Date.Today
-                    GamingGroup = createGamingGroup groupId
                   }
 
               log.LogInformation("Enqueued import of data for user {0}", bgguser)              
               OkObjectResult("Enqueued") :> IActionResult
-          | _ ->
-              BadRequestObjectResult("Please fill in all required parameters.") :> IActionResult
+          | (bgguser, dateFrom, dateTo) ->
+              let importParametersResult = 
+                  getConfigurationRoot context
+                  |> Configuration.DefaultImportParameters.get
+                  |> Result.map (fun cfg ->
+                      {
+                        BggUsername = bgguser |> Option.defaultValue cfg.BggUser
+                        DateFrom = dateFrom |> Option.bind Date.fromString  |> Option.defaultValue cfg.DateFrom
+                        DateTo = dateTo |> Option.bind Date.fromString |> Option.defaultValue Date.Today
+                      })
+              
+              match importParametersResult with
+              | Ok m ->
+                  queueMessage <- m
+                  log.LogInformation("Enqueued import of data for user {0}. Some data was read from configuration", m.BggUsername)
+                  OkObjectResult("Enqueued") :> IActionResult
+              | Error _ -> BadRequestObjectResult("Please fill in all required parameters. ") :> IActionResult 
+                  
               
        
        
@@ -152,6 +175,7 @@ module Functions =
     //needs Microsoft.WindowsAzure.Storage.dll 9.3.1, workaround here https://github.com/Azure/azure-functions-host/issues/3784.             
     [<FunctionName("BLOB-ParsePlayers2")>]       
     let parsePlayersRepeat
+        //TODO another output binding - queue that will continue - e.g. parseGames, just to show to outputs 
         ([<BlobTrigger("bggdata/{name}", Connection = BlobConnection )>]bggData: Stream)
         ([<Table("bggPlayers")>] table: CloudTable)
         (log: ILogger) =

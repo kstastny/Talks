@@ -4,20 +4,48 @@ Azure Functions are Microsoft's version of serverless compute. They are an Azure
 
 I will show you scenarios where Azure Functions can simplify your life as a developer but also how and when they can (sometimes) complicate it. You will see when it is useful to consider using them, how can you go about implementing them and what problems you might encounter along the way.
 
-
-
 ---------------------
+
+NOTES regarding talk
+ * start
+    * not a talk about serverless, I want to show practical examples how to use Azure Functions and how to get started
+
+ * hooks / Slide notes
+    * Benefits
+      * Autoscaling - no silver bullet, there are still limits depending on the Hosting Plan chosen
+    * Drawbacks
+      * Cold start - for the whole function app, not individual functions. 
+      * Cold start can be avoided by running WarmUp function on trigger every 15 minutes
+      * Versioning problems - e.g. CloudTable in trigger needs Microsoft.WindowsAzure.Storage.dll 9.3.1, workaround here https://github.com/Azure/azure-functions-host/issues/3784.
+    * DEMO Hello world
+      * possible in the portal but only good for demo purposes so we will skip.     
+      * when I first saw functions demonstrations, everybody has used Portal which drove me away. too much like stored procedures, no system, not replicable
+    * Securing HTTP Functions
+      * production - some just mention, I don't have experience with those
+      TODO prepare what to say about APIM, ASE
+    * Demo application
+      * local development
+          * Azure Storage Emulator (show), or Azurite, or Azure connection
+          * https://hub.docker.com/r/microsoft/azure-storage-emulator/
+          * https://github.com/Azure/Azurite
+      * demo
+          * implement HTTP Trigger with [<Out>] queue binding
+          * implement Queue Trigger with Blob binding
+            * NOTE that to save multiple blobs, we would need imperative binding 
+                 see https://simonholman.blog/azure-functions-with-imperative-bindings/
+    * Monitoring
+      * Show how to stream logs (fileLoggingMode always)
+      * Show where to see function executions and how to drill down
+      * Show traces - appInsights | Logs (Analytics) | traces
+
+
+
+
+
 poznámky pro příště
  * Meetup - priste ne tak kontrastni pozadi (může být i ve tmě, takže VS code předem na solarized dark, obrázky v přednášce ne bílé, ale aspoň trochu šedé pozadí)
 
 
-
-- neni talk primárně o serverless, odkazat na prednasku Gojko. (nebudu řešit obecné principy, výhody a tak, když tak jen krátce)
-- serverless jen lehce zminit, spis motivaci k pouziti funkci
-- jak to funguje, jake verze
-- vstupy, vystupy, napojeni
-- ukazky (smart - Cs i Fs)
-- fsharping - ukazky hlavne v1, kvuli toolingu. Ale i navod, jak pouzit v2 (musim do te doby rozchodit - kdyz cas a moznost tak pripravit i v2 template? Je to opensource)
 - HTTP funkce asi schovat za API gateway? něco k tomu najít
 - log level settings v host.json https://stackoverflow.com/questions/53405020/configure-loglevel-of-azure-function-using-environment-variables
 - ukázat ExecutionContext (čtení konfigurace)

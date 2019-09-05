@@ -7,4 +7,9 @@ POST {{api}}/import/users?code={{hostkey}}&datefrom=2019-01-01&dateto=2019-08-01
 
 
 ### Run Import
-POST {{api}}/import/run?code={{hostkey}}&datefrom=2018-01-01&dateto=2019-08-01&bggusername=Aredhel&gamingGroupId=18663
+POST {{api}}/import/run?code={{hostkey}}&datefrom=2017-01-01&dateto=2018-08-01&bggusername=Aredhel
+
+
+### Run Import with configured params
+POST {{api}}/import/run
+x-functions-key: {{hostkey}}

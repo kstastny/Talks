@@ -16,7 +16,6 @@ type ImportParameters =
         BggUsername: string
         DateFrom: Date
         DateTo: Date
-        GamingGroup: GamingGroup
     }
 
 
