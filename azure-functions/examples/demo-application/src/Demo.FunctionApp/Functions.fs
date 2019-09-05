@@ -20,7 +20,6 @@ open Newtonsoft.Json
 open NemeStats.Import
 open NemeStats.Import.BoardGameGeek
 open NemeStats.Import.Importer
-open NemeStats.Import.NemeStats
 
 open Demo.FunctionApp
 
@@ -32,11 +31,6 @@ module Functions =
                 else
                     None
     
-    let createGamingGroup queryParam : GamingGroup =
-        {
-            //TODO error handling
-            Id = queryParam |> Int32.Parse
-        }
         
     let private getConfigurationRoot (context: Microsoft.Azure.WebJobs.ExecutionContext) =
         (ConfigurationBuilder())
@@ -49,18 +43,18 @@ module Functions =
     [<Literal>]
     let private ImportQueue = "importQueue"
     
-    //TODO all connections are the same, it is just StorageConnection
-    [<Literal>]        
-    let private QueuesConnection = "AzureWebJobsStorage"
-    [<Literal>]        
-    let private BlobConnection = "AzureWebJobsStorage"
-    [<Literal>]        
-    let private TablesConnection = "AzureWebJobsStorage"
+    [<Literal>]
+    let private ParseGamesQueue = "parseGames"
+    
+    [<Literal>]
+    
+    let private AzureStorageConnection = "AzureWebJobsStorage"
+        
         
     [<FunctionName("HTTP-RunImport")>]        
     let runImportHTTP
         ([<HttpTrigger(AuthorizationLevel.Function, "post", Route = "import/run")>]req: HttpRequest)
-        ([<Queue(ImportQueue, Connection = QueuesConnection)>] [<Out>] queueMessage: ImportParameters outref)
+        ([<Queue(ImportQueue, Connection = AzureStorageConnection)>] [<Out>] queueMessage: ImportParameters outref)
         (context: Microsoft.Azure.WebJobs.ExecutionContext)
         (log: ILogger) =
         
@@ -72,7 +66,8 @@ module Functions =
               queueMessage <-
                   {
                     BggUsername = bgguser
-                    DateFrom = Date.fromString dateFrom |> Option.get
+                    //NOTE: this is not how this should work, as for invalid strings we will get an unreadable exception.
+                    DateFrom = Date.fromString dateFrom |> Option.get  
                     DateTo = dateTo |> Option.bind Date.fromString |> Option.defaultValue Date.Today
                   }
 
@@ -102,15 +97,15 @@ module Functions =
     //binding expression patterns see https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-expressions-patterns              
     [<FunctionName("QUEUE-DownloadData")>]              
     let downloadDataQueue
-        ([<QueueTrigger(ImportQueue, Connection = QueuesConnection)>]importPars: ImportParameters)
-        ([<Blob("bggdata/{rand-guid}.xml", FileAccess.Write, Connection = BlobConnection)>]bggData: Stream)
+        ([<QueueTrigger(ImportQueue, Connection = AzureStorageConnection)>]importPars: ImportParameters)
+        ([<Blob("bggdata/{rand-guid}.xml", FileAccess.Write, Connection = AzureStorageConnection)>]bggData: Stream)
         (log: ILogger) =
             task {
-                let msg = sprintf "F# Queue trigger function processed: %A" importPars
-                log.LogInformation msg
+                log.LogInformation <| sprintf "Triggered Download data: %A" importPars
                 
-                //TODO more pages in different function - will need different logic and more blobs (imperative bindings, different example, see https://simonholman.blog/azure-functions-with-imperative-bindings/)
+                //NOTE: we are just downloading and processing the first page of data.
                 //could also access BlobDirectory directly https://social.msdn.microsoft.com/Forums/azure/en-US/f0b71c54-c92c-4180-9896-70a4d1209ca2/naming-blob-output?forum=AzureFunctions
+                //or we could use IBinder to create several blobs for given username
                 let getPage pIndex =
                     BoardGameGeek.Api.downloadPlaysPage importPars.BggUsername importPars.DateFrom importPars.DateTo pIndex
 
@@ -127,22 +122,34 @@ module Functions =
             }
             
        
+       
     [<CLIMutable>]       
     type PlayersTable = {
         PartitionKey: string
         RowKey: string
         Players: string list
-    }       
+    }
+    
+    
+    let private readAsString (bggData: Stream) =
+        use reader = new StreamReader(bggData)
+        reader.ReadToEnd () 
+        
            
     [<FunctionName("BLOB-ParsePlayers")>]       
     let parsePlayers
-        //TODO remove blob after processing?
-        ([<BlobTrigger("bggdata/{name}", Connection = BlobConnection )>]bggData: Stream)
+        ([<BlobTrigger("bggdata/{name}", Connection = AzureStorageConnection )>]bggData: Stream)
+        (name: string) //name of blob
+        ([<Queue(ParseGamesQueue, Connection = AzureStorageConnection)>] [<Out>] blobToParseGames: string outref)
         // https://stackoverflow.com/questions/8467227/apply-attribute-to-return-value-in-f
-        (log: ILogger) 
+        (log: ILogger)
+        // return attribute - store data to specified table. We have to use unique RowKey because this is always inserted
         : [<return: Table("testTable")>] PlayersTable =
-            use reader = new StreamReader(bggData)
-            let xmlString = reader.ReadToEnd () 
+            
+            //enqueue blob name to parse games    
+            blobToParseGames <- name
+            
+            let xmlString = readAsString bggData
             let players =
                 xmlString
                 |> BoardGameGeek.Api.parsePlays
@@ -150,14 +157,38 @@ module Functions =
             
             {
                 PartitionKey = "bgg"
-                //RowKey = xmlString |> BoardGameGeek.Api.parseUsername
                 RowKey = xmlString |> BoardGameGeek.Api.parseUsername |> (sprintf "%s%s" (Guid.NewGuid().ToString()) )
                 Players = players |> List.choose (fun x -> x.Name)
             }
             
             
             
-    type PlayersTable2() =
+    // https://simonholman.blog/azure-functions-with-imperative-bindings/            
+    [<FunctionName("QUEUE-ParseGames")>]              
+    let parseGamesQueue
+        ([<QueueTrigger(ParseGamesQueue, Connection = AzureStorageConnection)>]blobName: string)
+        (blobBinder: IBinder)
+        (log: ILogger) =
+            task {
+                log.LogInformation <| sprintf "Parse games from blob: %s" blobName
+                
+                let blobAttribute = BlobAttribute(sprintf "bggdata/%s" blobName, FileAccess.Read)
+                use! bggData = blobBinder.BindAsync<Stream>(blobAttribute)
+                
+                let xmlString = readAsString bggData
+                let games =
+                    xmlString
+                    |> BoardGameGeek.Api.parsePlays
+                    |> List.map (fun x -> x.GameName)
+                    |> List.distinct
+                    
+                log.LogInformation <| sprintf "Found following games played: %A" games                    
+            }
+            
+            
+            
+            
+    type PlayersTableEntity() =
         inherit TableEntity()
         // https://stackoverflow.com/questions/45517481/create-a-tableentity-with-array-or-list-property
         member val Players : string list = [] with get, set
@@ -172,11 +203,11 @@ module Functions =
 
         
         
+    /// Alternative example for binding to Table Storage. This Function stores data using CloudTable which allows us to update existing values        
     //needs Microsoft.WindowsAzure.Storage.dll 9.3.1, workaround here https://github.com/Azure/azure-functions-host/issues/3784.             
-    [<FunctionName("BLOB-ParsePlayers2")>]       
+    [<FunctionName("BLOB-ParsePlayersEntity")>]       
     let parsePlayersRepeat
-        //TODO another output binding - queue that will continue - e.g. parseGames, just to show to outputs 
-        ([<BlobTrigger("bggdata/{name}", Connection = BlobConnection )>]bggData: Stream)
+        ([<BlobTrigger("bggdata/{name}", Connection = AzureStorageConnection )>]bggData: Stream)
         ([<Table("bggPlayers")>] table: CloudTable)
         (log: ILogger) =
             task {
@@ -190,13 +221,13 @@ module Functions =
                 let partitionKey = "bgg"
                 let rowKey = xmlString |> BoardGameGeek.Api.parseUsername
                 
-                let playersTable = PlayersTable2()
+                let playersTable = PlayersTableEntity()
                 playersTable.RowKey <- rowKey
                 playersTable.PartitionKey <- partitionKey
                 playersTable.Players <- players |> List.choose (fun x -> x.Name)
                 
                 //https://microsoft.github.io/AzureTipsAndTricks/blog/tip85.html
-                let retrieve = TableOperation.Retrieve<PlayersTable2>(partitionKey, rowKey);
+                let retrieve = TableOperation.Retrieve<PlayersTableEntity>(partitionKey, rowKey);
                 let! retrieveResult = table.ExecuteAsync(retrieve)
                 let operation =
                     match retrieveResult with
@@ -204,11 +235,9 @@ module Functions =
                     | _ when retrieveResult.HttpStatusCode <> 200 ->
                         TableOperation.Insert(playersTable)
                     | original ->
-                        let tbl = original.Result :?> PlayersTable2
+                        let tbl = original.Result :?> PlayersTableEntity
                         tbl.Players <- (tbl.Players |> List.append playersTable.Players |> List.distinct)
                         tbl.ETag <- original.Etag
-                        
-                        //printfn "PL = %A" tbl.Players
                         
                         TableOperation.Replace(tbl)
                 let! opResult = table.ExecuteAsync(operation)

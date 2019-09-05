@@ -230,6 +230,7 @@ see https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
 
 ' HTTP Launcher - will queue the task. Then queue will trigger download, then blob will be parsed and result goes to TableStorage
 ' NOTE: BlobTrigger processes blobs that were already present but the trigger did not see them before
+' NOTE: normally the design would be different (e.g. BlobTrigger would just fill various queues) but I want to add new things one at a time, therefore the awkward architecture
 
 
 ***
