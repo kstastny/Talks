@@ -22,6 +22,7 @@ open NemeStats.Import.BoardGameGeek
 open NemeStats.Import.Importer
 
 open Demo.FunctionApp
+open Demo.FunctionApp.Storage
 
 module Functions =
     
@@ -39,6 +40,19 @@ module Functions =
             .AddEnvironmentVariables()
             .Build();        
     
+    
+    // non-Result method for demo, only gets first page of results
+    let private downloadPlays (pars: ImportParameters) =
+        task {
+            let! data = BoardGameGeek.Api.downloadPlaysPage pars.BggUsername pars.DateFrom pars.DateTo 0
+            match data with
+            | Ok x ->
+                return x
+            | Error e ->
+                failwithf "%A" e
+                return "" //NOTE: this row won't execute but we have to satisfy the compiler
+        }
+        
         
     [<Literal>]
     let private ImportQueue = "importQueue"
@@ -47,8 +61,8 @@ module Functions =
     let private ParseGamesQueue = "parseGames"
     
     [<Literal>]
-    
     let private AzureStorageConnection = "AzureWebJobsStorage"
+        
         
         
     [<FunctionName("HTTP-RunImport")>]        
@@ -58,42 +72,50 @@ module Functions =
         (context: Microsoft.Azure.WebJobs.ExecutionContext)
         (log: ILogger) =
         
-        let q x = queryParam x req 
+        let q x = queryParam x req
+        
+        let cfg = getConfigurationRoot context |> Configuration.DefaultImportParameters.parse
+        
+        let bgguser = q "bggusername" |> Option.defaultValue cfg.BggUser
+        let datefrom = q "datefrom" |> Option.bind Date.fromString |> Option.defaultValue cfg.DateFrom
+        let dateto = q "dateto" |> Option.bind Date.fromString |> Option.defaultValue Date.Today
+        
+        queueMessage <- ImportParameters.Create bgguser datefrom dateto
+            
+        OkObjectResult("Enqueued") :> IActionResult
+
       
-        match q "bggusername", q "datefrom", q "dateto" with
-          | (Some bgguser, Some dateFrom, dateTo) ->
+    
+    
+    //version with result     
+//    [<FunctionName("HTTP-RunImport")>]        
+//    let runImportHTTP
+//        ([<HttpTrigger(AuthorizationLevel.Function, "post", Route = "import/run")>]req: HttpRequest)
+//        ([<Queue(ImportQueue, Connection = AzureStorageConnection)>] [<Out>] queueMessage: ImportParameters outref)
+//        (context: Microsoft.Azure.WebJobs.ExecutionContext)
+//        (log: ILogger) =
+//        
+//        let q x = queryParam x req
+//        
+//        let queueMsg =
+//            getConfigurationRoot context
+//            |> Configuration.DefaultImportParameters.get
+//            |> Result.map (fun cfg ->
+//                
+//                let bgguser = q "bggusername" |> Option.defaultValue cfg.BggUser
+//                let datefrom = q "datefrom" |> Option.bind Date.fromString |> Option.defaultValue cfg.DateFrom
+//                let dateto = q "dateto" |> Option.bind Date.fromString |> Option.defaultValue Date.Today
+//                
+//                ImportParameters.Create bgguser datefrom dateto
+//                )
+//            
+//        match queueMsg with
+//        | Ok m ->
+//            queueMessage <- m
+//            log.LogInformation("Enqueued import of data for user {0}. Some data was read from configuration", m.BggUsername)
+//            OkObjectResult("Enqueued") :> IActionResult
+//        | Error e -> BadRequestObjectResult(sprintf "Error sending message: %A" e) :> IActionResult             
 
-              queueMessage <-
-                  {
-                    BggUsername = bgguser
-                    //NOTE: this is not how this should work, as for invalid strings we will get an unreadable exception.
-                    DateFrom = Date.fromString dateFrom |> Option.get  
-                    DateTo = dateTo |> Option.bind Date.fromString |> Option.defaultValue Date.Today
-                  }
-
-              log.LogInformation("Enqueued import of data for user {0}", bgguser)              
-              OkObjectResult("Enqueued") :> IActionResult
-          | (bgguser, dateFrom, dateTo) ->
-              let importParametersResult = 
-                  getConfigurationRoot context
-                  |> Configuration.DefaultImportParameters.get
-                  |> Result.map (fun cfg ->
-                      {
-                        BggUsername = bgguser |> Option.defaultValue cfg.BggUser
-                        DateFrom = dateFrom |> Option.bind Date.fromString  |> Option.defaultValue cfg.DateFrom
-                        DateTo = dateTo |> Option.bind Date.fromString |> Option.defaultValue Date.Today
-                      })
-              
-              match importParametersResult with
-              | Ok m ->
-                  queueMessage <- m
-                  log.LogInformation("Enqueued import of data for user {0}. Some data was read from configuration", m.BggUsername)
-                  OkObjectResult("Enqueued") :> IActionResult
-              | Error _ -> BadRequestObjectResult("Please fill in all required parameters. ") :> IActionResult 
-                  
-              
-       
-       
     //binding expression patterns see https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-expressions-patterns              
     [<FunctionName("QUEUE-DownloadData")>]              
     let downloadDataQueue
@@ -103,39 +125,43 @@ module Functions =
             task {
                 log.LogInformation <| sprintf "Triggered Download data: %A" importPars
                 
-                //NOTE: we are just downloading and processing the first page of data.
-                //could also access BlobDirectory directly https://social.msdn.microsoft.com/Forums/azure/en-US/f0b71c54-c92c-4180-9896-70a4d1209ca2/naming-blob-output?forum=AzureFunctions
-                //or we could use IBinder to create several blobs for given username
-                let getPage pIndex =
-                    BoardGameGeek.Api.downloadPlaysPage importPars.BggUsername importPars.DateFrom importPars.DateTo pIndex
-
-                    
-                match! getPage 0 with
-                | Ok p ->
-                    use writer = new StreamWriter(bggData)
-                    do! writer.WriteAsync p
-                | Error e ->
-                    failwithf "Error downloading data: %A" e
+                let! data = downloadPlays importPars
+                use writer = new StreamWriter(bggData)
+                do! writer.WriteAsync data
                     
                 log.LogInformation("Downloaded plays for player {0}", importPars.BggUsername)                    
                 //return sprintf "bggdata/%s.xml" importPars.BggUsername               
-            }
+            }    
+           
+       
+//    //binding expression patterns see https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-expressions-patterns              
+//    [<FunctionName("QUEUE-DownloadData")>]              
+//    let downloadDataQueue
+//        ([<QueueTrigger(ImportQueue, Connection = AzureStorageConnection)>]importPars: ImportParameters)
+//        ([<Blob("bggdata/{rand-guid}.xml", FileAccess.Write, Connection = AzureStorageConnection)>]bggData: Stream)
+//        (log: ILogger) =
+//            task {
+//                log.LogInformation <| sprintf "Triggered Download data: %A" importPars
+//                
+//                //NOTE: we are just downloading and processing the first page of data.
+//                //could also access BlobDirectory directly https://social.msdn.microsoft.com/Forums/azure/en-US/f0b71c54-c92c-4180-9896-70a4d1209ca2/naming-blob-output?forum=AzureFunctions
+//                //or we could use IBinder to create several blobs for given username
+//                let getPage pIndex =
+//                    BoardGameGeek.Api.downloadPlaysPage importPars.BggUsername importPars.DateFrom importPars.DateTo pIndex
+//
+//                    
+//                match! getPage 0 with
+//                | Ok p ->
+//                    use writer = new StreamWriter(bggData)
+//                    do! writer.WriteAsync p
+//                | Error e ->
+//                    failwithf "Error downloading data: %A" e
+//                    
+//                log.LogInformation("Downloaded plays for player {0}", importPars.BggUsername)                    
+//                //return sprintf "bggdata/%s.xml" importPars.BggUsername               
+//            }
             
        
-       
-    [<CLIMutable>]       
-    type PlayersTable = {
-        PartitionKey: string
-        RowKey: string
-        Players: string list
-    }
-    
-    
-    let private readAsString (bggData: Stream) =
-        use reader = new StreamReader(bggData)
-        reader.ReadToEnd () 
-        
-           
     [<FunctionName("BLOB-ParsePlayers")>]       
     let parsePlayers
         ([<BlobTrigger("bggdata/{name}", Connection = AzureStorageConnection )>]bggData: Stream)
@@ -188,18 +214,7 @@ module Functions =
             
             
             
-    type PlayersTableEntity() =
-        inherit TableEntity()
-        // https://stackoverflow.com/questions/45517481/create-a-tableentity-with-array-or-list-property
-        member val Players : string list = [] with get, set
-        
-        member this.PlayersRaw
-            with get () =
-                this.Players |> JsonConvert.SerializeObject
-            and  set (value) =
-                match value with
-                | null -> ()
-                | _ -> this.Players <- JsonConvert.DeserializeObject<string list>(value) 
+
 
         
         

@@ -135,15 +135,6 @@
 
 ***
 
-### Azure Functions Prerequisities
-
-* Command line - [Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local)
-* VS Code - Core Tools + [Azure Functions Extension](https://github.com/Microsoft/vscode-azurefunctions)
-* Visual Studio - [Azure Functions and WebJobs Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs)
-* JetBrains Rider - [Azure Toolkit](https://plugins.jetbrains.com/plugin/11220-azure-toolkit-for-rider)
-
-***
-
 ### Function App
 
 * "Project" for Azure Functions
@@ -232,6 +223,16 @@ see https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
 ' NOTE: BlobTrigger processes blobs that were already present but the trigger did not see them before
 ' NOTE: normally the design would be different (e.g. BlobTrigger would just fill various queues) but I want to add new things one at a time, therefore the awkward architecture
 
+***
+
+### **DEMO** Function Settings
+
+* Configurable the same way as Azure App Service
+    * e.g. `local.settings.json`
+    * Azure portal
+
+' show how to read configuration in demo app
+' show local.settings.json. Show settings in portal
 
 ***
 
@@ -273,18 +274,6 @@ see https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
 ' https://docs.microsoft.com/en-us/azure/azure-functions/functions-scale
 ' Consumption plan - can be limited by daily usage quota. https://azure.microsoft.com/is-is/pricing/details/functions/
 ' minimum execution time and memory for a single function execution is 100 ms and 128 mb respectively (i.e. one run is minimum of 1/80 GB-sec)
-
-
-***
-
-### **DEMO** Function Settings
-
-* Configurable the same way as Azure App Service
-    * e.g. `local.settings.json`
-    * Azure portal
-
-' show how to read configuration in demo app
-' show local.settings.json. Show settings in portal
 
 
 ***
@@ -341,6 +330,15 @@ see https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
 ***
 
 ## Q&A
+
+***
+
+### Azure Functions Prerequisities
+
+* Command line - [Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local)
+* VS Code - Core Tools + [Azure Functions Extension](https://github.com/Microsoft/vscode-azurefunctions)
+* Visual Studio - [Azure Functions and WebJobs Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-develop-vs)
+* JetBrains Rider - [Azure Toolkit](https://plugins.jetbrains.com/plugin/11220-azure-toolkit-for-rider)
 
 ***
 

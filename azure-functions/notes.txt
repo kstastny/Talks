@@ -29,10 +29,11 @@ NOTES regarding talk
           * https://hub.docker.com/r/microsoft/azure-storage-emulator/
           * https://github.com/Azure/Azurite
       * demo
-          * implement HTTP Trigger with [<Out>] queue binding
+          * implement HTTP Trigger with [<Out>] queue binding - use Add new function in Rider
           * implement Queue Trigger with Blob binding
             * NOTE that to save multiple blobs, we would need imperative binding 
                  see https://simonholman.blog/azure-functions-with-imperative-bindings/
+          * implement Blob Trigger with return value for Table Storage (or just show)       
     * Monitoring
       * Show how to stream logs (fileLoggingMode always)
       * Show where to see function executions and how to drill down

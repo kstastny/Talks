@@ -17,3 +17,10 @@ type ImportParameters =
         DateFrom: Date
         DateTo: Date
     }
+    with
+        static member Create user datefrom dateto =
+            {
+                BggUsername = user
+                DateFrom = datefrom
+                DateTo = dateto
+            }

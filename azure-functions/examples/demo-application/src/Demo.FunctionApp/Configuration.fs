@@ -107,5 +107,11 @@ module DefaultImportParameters =
             BggUser = x.["defaultParams:bggUser"]
         })
 
+    /// throw exception on incorrect config, for demo purposes - simpler code for non-F# people        
+    let parse (conf: IConfiguration) : DefaultParamsConfig =
+        match get conf with
+        | Ok x -> x
+        | Error e -> failwithf "Configuration error: %A" e
+
 
 

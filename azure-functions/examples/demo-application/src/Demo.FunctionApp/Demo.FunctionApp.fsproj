@@ -19,6 +19,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.fs" />
+    <Compile Include="Storage.fs" />
     <Compile Include="Functions.fs" />
   </ItemGroup>
   <ItemGroup>
