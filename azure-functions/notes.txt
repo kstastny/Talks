@@ -6,38 +6,81 @@ I will show you scenarios where Azure Functions can simplify your life as a deve
 
 ---------------------
 
+***
+
+## Outline
+
+* Serverless
+* What are Azure Functions
+* Implementing Azure Functions
+    * Function App
+    * Triggers
+    * Bindings
+* Deployment
+* Monitoring  
+
 NOTES regarding talk
  * start
-    * not a talk about serverless, I want to show practical examples how to use Azure Functions and how to get started
+    * not a talk about serverless, I want to show practical examples how to use Azure Functions and how to get started. won't be talking much about theory
+    * I want to show you how to use them, when you should consider them and give you a jumpstart if you find this technology interesting and want to try it
 
  * hooks / Slide notes
-    * Benefits
+    * Serverless
+      * Common misunderstanding - serverless is just compute. it is not
+    * Benefits - Serverless
+      * provide value - you can devote time to your core business and not worry about collaterals
+      * outsource - provider gets economies of scale benefits, has his own specialists who know much more about operations then we'll ever do
       * Autoscaling - no silver bullet, there are still limits depending on the Hosting Plan chosen
+          * however - you don't need to configure anything, you don't care about the amount of virtual servers or app instances
+    * Azure Functions
+      * Stateless - should not store anything in memory between calls, state has to be read from DB, redis etc.
+    * Benefits - Functions
+      * Lower cost - no need to pay for the whole virtual that would have unused capacity
     * Drawbacks
+      * vendor lock-in: need to rewrite if moving away, but the risk of huge price increase is not great because of competition
       * Cold start - for the whole function app, not individual functions. 
       * Cold start can be avoided by running WarmUp function on trigger every 15 minutes
       * Versioning problems - e.g. CloudTable in trigger needs Microsoft.WindowsAzure.Storage.dll 9.3.1, workaround here https://github.com/Azure/azure-functions-host/issues/3784.
     * DEMO Hello world
       * possible in the portal but only good for demo purposes so we will skip.     
       * when I first saw functions demonstrations, everybody has used Portal which drove me away. too much like stored procedures, no system, not replicable
-    * Securing HTTP Functions
-      * production - some just mention, I don't have experience with those
-      TODO prepare what to say about APIM, ASE
+      * instead of attributes, we can use function.json (will not be showing) https://github.com/Azure/azure-functions-host/wiki/function.json
+          * show that this is generated      
+    * Triggers
+      * show https://docs.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings
     * Demo application
+      * show pipeline image - warn that this is just for demo purposes and they should not architect their application like this
       * local development
           * Azure Storage Emulator (show), or Azurite, or Azure connection
           * https://hub.docker.com/r/microsoft/azure-storage-emulator/
           * https://github.com/Azure/Azurite
       * demo
-          * implement HTTP Trigger with [<Out>] queue binding - use Add new function in Rider
-          * implement Queue Trigger with Blob binding
+          * HTTP Trigger with [<Out>] queue binding
+          * uncomment Queue Trigger with Blob binding
+            * show that after launch it processes requests we made before and stores data
             * NOTE that to save multiple blobs, we would need imperative binding 
                  see https://simonholman.blog/azure-functions-with-imperative-bindings/
-          * implement Blob Trigger with return value for Table Storage (or just show)       
+          * uncomment Blob Trigger with return value for Table Storage 
+            * two output bindings - Blob and Table
+            * show data in Table storage
+          * Function settigns
+            * show how to read, set base path necessary for local development to find settings file
+            * show how to set in Portal
+    * Securing HTTP Functions
+      * Function keys https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook#authorization-keys
+      * during development - show in portal, whitelist just one IP (deny office access)
+      * production - some just mention, I don't have experience with those
+          * explain gateway - sits before HTTP Functions, the functions can only be called from outbound gateway IPs
+    * Deployment
+       * CLI `func azure functionapp publish functionsdemo82` (needs `az` or `Az.Accounts` PowerShell module. login with `az login`)
+    * Hosting plans
+       * Consumption - you can set quota in GB-Sec (in Function app settings)
     * Monitoring
       * Show how to stream logs (fileLoggingMode always)
       * Show where to see function executions and how to drill down
       * Show traces - appInsights | Logs (Analytics) | traces
+    * Q&A
+      * do you have any experience with Azure Functions? When did you use them, what did you think about them?      
 
 
 

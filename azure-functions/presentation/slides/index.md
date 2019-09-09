@@ -11,19 +11,6 @@
 
 ***
 
-## Outline
-
-* Serverless
-* What are Azure Functions
-* Implementing Azure Functions
-    * Function App
-    * Triggers
-    * Bindings
-* Deployment
-* Monitoring    
-
-***
-
 ## Serverless
 
 * Cloud provider fully manages server infrastructure
@@ -50,7 +37,7 @@
 
 * Focus on providing value to your customer
 * "Outsource" operations related tasks
-* Automatic scaling, fault tolerance
+* Automatic scaling
 
 ***
 
@@ -77,7 +64,6 @@
 * Rapid and simple development
 * Lower cost
 * Automated scaling
-* All the power of Azure Web Apps
 
 ' pricing - you pay only when the function runs (pay as you go). optionally also dedicated plan. Premium plan in preview, see https://docs.microsoft.com/en-us/azure/azure-functions/functions-scale
 ' Azure Web Apps - Functions based on WebJobs. Kudu, CI etc. available
@@ -90,11 +76,10 @@
 
 * Vendor lock-in
 * Performance - cold start
-* Not for everyone
-* DLL Hell reminders
 * No in-server state
-* Security - bigger attack vector than single app
+* DLL Hell reminders
 
+' Security - bigger attack vector than single app
 ' cold start - https://mikhail.io/serverless/coldstarts/azure/
 ' https://martinfowler.com/articles/serverless.html#drawbacks for stuff to talk about
 
@@ -127,6 +112,19 @@
 
 ***
 
+### Azure Functions Versions
+
+* v1 - .NET Framework 4.7
+* v2 - .NET Core 2.2
+    * recommended version
+    * support for some languages dropped (bash, php, F# Scripts)
+
+see https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
+
+' I will show v2 only
+
+***
+
 ### **DEMO** Create Function (F#)
 
 > HTTP Hello world
@@ -145,18 +143,6 @@
 ' you can think of it as your "app service" or "web" that has the functionality
 ' show in Azure Portal
 
-***
-
-### Azure Functions Versions
-
-* v1 - .NET Framework 4.7
-* v2 - .NET Core 2.2
-    * recommended version
-    * support for some languages dropped (bash, php, F# Scripts)
-
-see https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
-
-' I will show v2 only
 
 ***
 
@@ -199,16 +185,18 @@ see https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
 
 ### Function Bindings
 
-* Blob storage
+* Blob Storage
 * Cosmos DB
 * SignalR
 * Table Storage
+* Storage Queues
+* Service Bus
 
 ***
 
 ### **DEMO** Function Triggers and Bindings
 
-> Getting Statistics from [BGG](https://boardgamegeek.com/geekplay.php?userid=199696&redirect=1&startdate=&dateinput=&dateinput=&enddate=&action=bydate&subtype=boardgame)
+> Getting Statistics from [BoardGameGeek](https://boardgamegeek.com/geekplay.php?userid=199696&redirect=1&startdate=&dateinput=&dateinput=&enddate=&action=bydate&subtype=boardgame)
 
 ' problem - get data about games from BoardGameGeek and somehow process them
 
@@ -236,6 +224,40 @@ see https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
 
 ***
 
+### Securing HTTP Functions
+
+* Function Keys
+    * Host Keys
+    * Function Keys
+* IP Whitelisting
+
+' Function Keys are meant for development
+' https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook#authorization-keys
+' Host - Master key - Admin Access
+' Query string or `x-functions-key` header
+' Gateway - IP whitelisting https://docs.microsoft.com/en-US/azure/app-service/app-service-ip-restrictions
+' http://blog.aakashsharma.me/azure/2018/01/06/azure-functions-restricting-public-access-and-ip/
+' IP whitelisting - CIDR format https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing
+
+***
+
+
+### Securing HTTP Functions
+
+* App Service Authentication / Authorization (Authentication Providers)
+* Azure API Management (APIM)
+* Azure App Service Environment (ASE)
+* Any other Gateway
+* custom Authentication and Authorization
+
+' Gateway - whitelist access to function for gateway IP, auth on gateway side
+' https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook#secure-an-http-endpoint-in-production
+' Authentication Providers - same as App Services (Azure AD, MS Account, Google, Facebook, Twitter, custom)
+' custom https://www.ben-morris.com/custom-token-authentication-in-azure-functions-using-bindings/
+
+
+***
+
 
 ### Deployment
 
@@ -250,6 +272,7 @@ see https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
 ' CLI, IDE - nice for testing before CI is set
 ' CI - show Deployment Center or Azure DevOps (same as deploying App Service)        
 ' Deployment Center - needs special structure of app. https://docs.microsoft.com/en-us/azure/azure-functions/functions-continuous-deployment 
+
 
 ***
 
@@ -268,47 +291,14 @@ see https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
 * App Service Plan
 * Premium (preview)
 
+* different plans have different [limits](https://docs.microsoft.com/en-us/azure/azure-functions/functions-scale)
+
 ' pricing differes
 ' App Service - you have to set the scaling correctly but you pay nothing extra ("only" for the app service plan)
 ' Premium - consumption with extra features (no cold start, unlimited execution duration, ...)
 ' https://docs.microsoft.com/en-us/azure/azure-functions/functions-scale
 ' Consumption plan - can be limited by daily usage quota. https://azure.microsoft.com/is-is/pricing/details/functions/
 ' minimum execution time and memory for a single function execution is 100 ms and 128 mb respectively (i.e. one run is minimum of 1/80 GB-sec)
-
-
-***
-
-### Securing HTTP Functions
-
-* Function Keys
-    * Host Keys
-    * Function Keys
-* IP Whitelisting
-
-' Function Keys are meant for development
-' https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook#authorization-keys
-' Host - Master key - Admin Access
-' Query string or `x-functions-key` header
-' Gateway - IP whitelisting https://docs.microsoft.com/en-US/azure/app-service/app-service-ip-restrictions
-' http://blog.aakashsharma.me/azure/2018/01/06/azure-functions-restricting-public-access-and-ip/
-' IP whitelisting - CIDR format https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing
-
-
-
-****
-
-### Securing HTTP Functions
-
-* App Service Authentication / Authorization (Authentication Providers)
-* Azure API Management (APIM)
-* Azure App Service Environment (ASE)
-* Any other Gateway
-* custom Authentication and Authorization
-
-' Gateway - whitelist access to function for gateway IP, auth on gateway side
-' https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook#secure-an-http-endpoint-in-production
-' Authentication Providers - same as App Services (Azure AD, MS Account, Google, Facebook, Twitter, custom)
-' custom https://www.ben-morris.com/custom-token-authentication-in-azure-functions-using-bindings/
 
 
 
