@@ -88,9 +88,9 @@
 ## Use Cases
  
 * System Glue
+' Automating processes
+' Scheduled jobs
 * Full backend application
-* Automating processes
-* Scheduled jobs
 * Dynamic workloads
 
 
@@ -106,6 +106,7 @@
 * Automatic log cleaning
 * Automatic restart of App Service on alarm (webhook)
 * Automatic data import
+* Refresh of search index
 
 ' log cleaning - DB and files from app service
 
@@ -119,8 +120,7 @@
     * recommended version
     * support for some languages dropped (bash, php, F# Scripts)
 
-see https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
-
+' https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
 ' I will show v2 only
 
 ***

@@ -4,8 +4,20 @@
 
 
 
+# @api = http://functionsdemo82.azurewebsites.net/api
+# @hostkey = 
+
+
+
+
+### Hello world
+GET {{api}}/hello?name=Karel
+
+
+
+
 ### Run Import
-POST {{api}}/import/run?code={{hostkey}}&datefrom=2017-01-01&dateto=2018-08-01&bggusername=Aredhel
+POST {{api}}/import/run?code={{hostkey}}&datefrom=2019-01-01&dateto=2019-12-31&bggusername=Aredhel
 
 
 ### Run Import with configured params
