@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?><plays username="Aredhel" userid="199696" total="28" page="1" termsofuse="https://boardgamegeek.com/xmlapi/termsofuse">
+    <play id="36900202" date="2019-07-30" quantity="1" length="0" incomplete="0" nowinstats="0" location="">
+        <item name="Codenames: Duet" objecttype="thing" objectid="224037">
+            <subtypes>
+                <subtype value="boardgame" />
+                <subtype value="boardgameintegration" />
+            </subtypes>
+        </item>
+        <comments>Loss</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Ivča B." startposition="2" color="" score="" new="0" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="36622234" date="2019-07-15" quantity="1" length="150" incomplete="0" nowinstats="0" location="">
+        <item name="Root" objecttype="thing" objectid="237182">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <comments>In order of play: Pierre Cat, Kirill Bird, me WA, Alex Vagabond</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="30" new="0" rating="0" win="1" />
+            <player username="" userid="0" name="Alex D." startposition="2" color="" score="21" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="" startposition="3" color="" score="25" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Kirill" startposition="4" color="" score="28" new="1" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="36558373" date="2019-07-12" quantity="1" length="0" incomplete="0" nowinstats="0" location="">
+        <item name="Mage Knight Board Game" objecttype="thing" objectid="96848">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <comments>Arythea, solo against lvl 5 and 8 cities. Won by taking second city at the end of third day.
+
+            During the beginning I conquered two dungeons and found two artifacts there (Horn of Wrath, Sapphire ring).
+
+            I found  white and blue city at the end of Day 2.
+
+            Took white city during Night 2 (one big attack, at the loss of Utem crossbowmen that were killed by Freezers). Took me more than 30 minutes to come up with that plan. In the end waiting saved me, I used blue ring to get another level, upon which I took Agility and Motivation. That was enough to get enough attack for killing everything.
+
+            Took blue city at the end of Day 3, just before dummy would anounce end of round. Took me two attacks. Having 3 gold units helped a lot (had a lot of reputation from Heroic Tale so recruiting them was quite easy).
+            93 Fame after taking second city.
+
+            Maximal effect plus Concentration is a nice combo
+            Total 188 Fame</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="" color="" score="188" new="0" rating="0" win="1" />
+        </players>
+    </play>
+    <play id="36375803" date="2019-07-02" quantity="1" length="180" incomplete="0" nowinstats="0" location="">
+        <item name="Root" objecttype="thing" objectid="237182">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <comments>Order of play Petr Marquise, Pierre Eyrie, Bernardo Vagabond, Neil WA, me Lizards</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="14" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Pierre" startposition="2" color="" score="30" new="0" rating="0" win="1" />
+            <player username="" userid="0" name="Bernardo" startposition="3" color="" score="28" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Neil" startposition="4" color="" score="20" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Petr B." startposition="5" color="" score="19" new="0" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="36340872" date="2019-06-30" quantity="1" length="0" incomplete="0" nowinstats="0" location="">
+        <item name="Mage Knight Board Game" objecttype="thing" objectid="96848">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <comments>Solo conquest with Arythea, dummy Norowas, played over  several evenings. I found blue city (5) and red city (8). I managed to take the blue one and kill a Draconum in front of the red one. I was in no position to try to take the second (skill wise)</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="" color="" score="95" new="0" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="36182174" date="2019-06-22" quantity="1" length="0" incomplete="0" nowinstats="0" location="">
+        <item name="Mage Knight Board Game" objecttype="thing" objectid="96848">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <comments>Solo game, Arythea, First Reconnaissance.
+            I found the city at the end of the second night.</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="" color="" score="64" new="0" rating="0" win="1" />
+        </players>
+    </play>
+    <play id="35965801" date="2019-06-09" quantity="1" length="0" incomplete="0" nowinstats="0" location="">
+        <item name="Root" objecttype="thing" objectid="237182">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <comments>I played Marquis, Eva Alliance, Alex Eyrie.
+            Alliance never really took off, we will have to find out how to handle it. At the beginning we killed a couple of their tokens and then kind of went around them. Probably their lack of cards was the main problem for them.</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="34" new="0" rating="0" win="1" />
+            <player username="" userid="0" name="Eva" startposition="2" color="" score="16" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Alex D." startposition="3" color="" score="28" new="1" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="35911404" date="2019-06-06" quantity="1" length="0" incomplete="0" nowinstats="0" location="">
+        <item name="Root" objecttype="thing" objectid="237182">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <comments>Second game, Eva Marquise, me Eyrie. I went to turmoil once</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="24" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Eva" startposition="2" color="" score="30" new="0" rating="0" win="1" />
+        </players>
+    </play>
+    <play id="35898384" date="2019-06-05" quantity="1" length="0" incomplete="0" nowinstats="0" location="">
+        <item name="Root" objecttype="thing" objectid="237182">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <comments>Learning game, Eva Cats, me Eyrie. Eva won on dominance, I had a really bad start, went to chaos twice in a row (once on bad draw, once on my mistake)</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="" new="1" rating="0" win="0" />
+            <player username="" userid="0" name="Eva" startposition="2" color="" score="" new="1" rating="0" win="1" />
+        </players>
+    </play>
+    <play id="35747694" date="2019-05-28" quantity="1" length="0" incomplete="1" nowinstats="0" location="">
+        <item name="Maria" objecttype="thing" objectid="40354">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <comments>We had to call the game off after 4.5hrs. We played 8 or 9 rounds, Prussia annexed Silesia in round 6 I think. France (me) had reduced military objectives and was finally pushing back the pragmatics.</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="" new="0" rating="0" win="0" />
+            <player username="neewolah" userid="680858" name="Daniel" startposition="2" color="" score="" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Neil" startposition="3" color="" score="" new="0" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="35619936" date="2019-05-21" quantity="1" length="210" incomplete="0" nowinstats="0" location="">
+        <item name="Time of Crisis: The Roman Empire in Turmoil, 235-284 AD" objecttype="thing" objectid="164949">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <comments>Played with expansion
+            Ended with Dioclecian, Pierre won on tiebreaker - Emperor</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="51" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Pierre" startposition="2" color="" score="57" new="0" rating="0" win="1" />
+            <player username="" userid="0" name="Alex D." startposition="3" color="" score="57" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Fernando" startposition="4" color="" score="57" new="0" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="35471811" date="2019-05-12" quantity="1" length="420" incomplete="0" nowinstats="0" location="">
+        <item name="1844/1854" objecttype="thing" objectid="183308">
+            <subtypes>
+                <subtype value="boardgame" />
+                <subtype value="boardgamecompilation" />
+                <subtype value="boardgameimplementation" />
+            </subtypes>
+        </item>
+        <comments>1854. I started SD which split super early, dumped it later (I had 3 shares, Daniel and Fuchso likewise). Operated KE, later NT and SB. Managed to get Orient Express and two nice runs of 43 from Constaninople to Paris.
+            I should have kept my half of company A, in retrospect this cost me a lot of money and maybe victory. Lokalbahns are quite strong.</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="5296" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Daniel" startposition="2" color="" score="4594" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Alex D." startposition="3" color="" score="5052" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Fuchso" startposition="4" color="" score="5536" new="0" rating="0" win="1" />
+        </players>
+    </play>
+    <play id="35449614" date="2019-05-11" quantity="1" length="0" incomplete="0" nowinstats="0" location="">
+        <item name="Senet" objecttype="thing" objectid="2399">
+            <subtypes>
+                <subtype value="boardgame" />
+                <subtype value="boardgameintegration" />
+            </subtypes>
+        </item>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="" color="" score="" new="0" rating="0" win="1" />
+            <player username="" userid="0" name="Eva" startposition="" color="" score="" new="0" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="35450042" date="2019-05-11" quantity="1" length="0" incomplete="0" nowinstats="0" location="">
+        <item name="Senet" objecttype="thing" objectid="2399">
+            <subtypes>
+                <subtype value="boardgame" />
+                <subtype value="boardgameintegration" />
+            </subtypes>
+        </item>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Eva" startposition="2" color="" score="" new="0" rating="0" win="1" />
+        </players>
+    </play>
+    <play id="35384565" date="2019-05-07" quantity="1" length="0" incomplete="0" nowinstats="0" location="">
+        <item name="Maria" objecttype="thing" objectid="40354">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Daniel" startposition="2" color="" score="" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Neil" startposition="3" color="" score="" new="0" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="35064230" date="2019-04-20" quantity="1" length="0" incomplete="0" nowinstats="0" location="">
+        <item name="Rummikub" objecttype="thing" objectid="811">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Eva" startposition="2" color="" score="" new="0" rating="0" win="1" />
+        </players>
+    </play>
+    <play id="34839108" date="2019-04-07" quantity="1" length="270" incomplete="0" nowinstats="0" location="">
+        <item name="1860: Railways on the Isle of Wight" objecttype="thing" objectid="12750">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="" color="" score="7414" new="0" rating="0" win="0" />
+            <player username="neewolah" userid="680858" name="Daniel" startposition="" color="" score="7548" new="0" rating="0" win="1" />
+            <player username="" userid="0" name="Fuchso" startposition="" color="" score="6139" new="0" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="34842165" date="2019-04-07" quantity="1" length="0" incomplete="0" nowinstats="0" location="play.boardgamecore.net">
+        <item name="Food Chain Magnate" objecttype="thing" objectid="175914">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <comments>http://play.boardgamecore.net/fcm/52286</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="591" new="0" rating="0" win="1" />
+            <player username="neewolah" userid="680858" name="Daniel" startposition="2" color="" score="175" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Bernardo" startposition="" color="" score="105" new="0" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="34852510" date="2019-04-07" quantity="1" length="0" incomplete="0" nowinstats="0" location="">
+        <item name="Indonesia" objecttype="thing" objectid="19777">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <comments>https://www.slothninja.com/indonesia/game/show/5840032984203264</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="" color="" score="2601" new="0" rating="0" win="1" />
+            <player username="neewolah" userid="680858" name="Daniel" startposition="" color="" score="2576" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Graham" startposition="" color="" score="913" new="0" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="34680186" date="2019-03-29" quantity="1" length="0" incomplete="0" nowinstats="0" location="play.boardgamecore.net">
+        <item name="Food Chain Magnate" objecttype="thing" objectid="175914">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <comments>http://play.boardgamecore.net/fcm/51996</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="" color="" score="280" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Bernardo" startposition="" color="" score="25" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Daniel" startposition="" color="" score="583" new="0" rating="0" win="1" />
+        </players>
+    </play>
+    <play id="34242726" date="2019-03-05" quantity="1" length="0" incomplete="0" nowinstats="0" location="">
+        <item name="Time of Crisis: The Roman Empire in Turmoil, 235-284 AD" objecttype="thing" objectid="164949">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="66" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Fernando" startposition="2" color="" score="71" new="0" rating="0" win="1" />
+            <player username="" userid="0" name="Viki" startposition="3" color="" score="24" new="0" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="33900520" date="2019-02-15" quantity="1" length="0" incomplete="0" nowinstats="0" location="play.boardgamecore.net">
+        <item name="Food Chain Magnate" objecttype="thing" objectid="175914">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <comments>http://play.boardgamecore.net/fcm/49631</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="" color="" score="373" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Bernardo" startposition="" color="" score="425" new="0" rating="0" win="1" />
+            <player username="" userid="0" name="Daniel" startposition="" color="" score="400" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Graham" startposition="" color="" score="0" new="0" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="33882488" date="2019-02-15" quantity="1" length="0" incomplete="0" nowinstats="0" location="Slothninja">
+        <item name="Indonesia" objecttype="thing" objectid="19777">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <comments>https://www.slothninja.com/indonesia/game/show/5880497087447040</comments>
+        <players>
+            <player username="" userid="0" name="Alex D." startposition="" color="" score="1106" new="0" rating="0" win="0" />
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="" color="" score="930" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Daniel" startposition="" color="" score="1247" new="0" rating="0" win="1" />
+            <player username="" userid="0" name="Graham" startposition="" color="" score="1132" new="0" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="33730422" date="2019-02-06" quantity="1" length="0" incomplete="0" nowinstats="0" location="Slothninja">
+        <item name="Indonesia" objecttype="thing" objectid="19777">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <comments>https://www.slothninja.com/indonesia/game/show/5800537681297408</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="" color="" score="2006" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Daniel" startposition="" color="" score="3261" new="0" rating="0" win="1" />
+            <player username="" userid="0" name="Graham" startposition="" color="" score="2703" new="0" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="33640862" date="2019-02-02" quantity="1" length="360" incomplete="0" nowinstats="0" location="">
+        <item name="1830: Railways &amp; Robber Barons" objecttype="thing" objectid="421">
+            <subtypes>
+                <subtype value="boardgame" />
+                <subtype value="boardgameintegration" />
+            </subtypes>
+        </item>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="4967" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Alex D." startposition="2" color="" score="5161" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Daniel" startposition="3" color="" score="8059" new="0" rating="0" win="1" />
+            <player username="" userid="0" name="Fuchso" startposition="4" color="" score="7740" new="0" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="33346255" date="2019-01-19" quantity="1" length="0" incomplete="0" nowinstats="0" location="">
+        <item name="Pandemic Legacy: Season 2" objecttype="thing" objectid="221107">
+            <subtypes>
+                <subtype value="boardgame" />
+                <subtype value="boardgameimplementation" />
+            </subtypes>
+        </item>
+        <comments>Prologue - Instructor, laborer. We lost on 8 incidents, we would have won next turn.</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Eva" startposition="2" color="" score="" new="0" rating="0" win="0" />
+        </players>
+    </play>
+    <play id="33349953" date="2019-01-19" quantity="1" length="0" incomplete="0" nowinstats="0" location="">
+        <item name="Pandemic Legacy: Season 2" objecttype="thing" objectid="221107">
+            <subtypes>
+                <subtype value="boardgame" />
+                <subtype value="boardgameimplementation" />
+            </subtypes>
+        </item>
+        <comments>Prologue - Farmer, Laborer, we won</comments>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="" new="0" rating="0" win="1" />
+            <player username="" userid="0" name="Eva" startposition="2" color="" score="" new="0" rating="0" win="1" />
+        </players>
+    </play>
+    <play id="33125373" date="2019-01-07" quantity="1" length="0" incomplete="0" nowinstats="0" location="">
+        <item name="Ponzi Scheme" objecttype="thing" objectid="180899">
+            <subtypes>
+                <subtype value="boardgame" />
+            </subtypes>
+        </item>
+        <players>
+            <player username="Aredhel" userid="199696" name="Aredhel" startposition="1" color="" score="3" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Daniel" startposition="2" color="" score="7" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Fernando" startposition="3" color="" score="7" new="0" rating="0" win="0" />
+            <player username="" userid="0" name="Pierre" startposition="4" color="" score="11" new="0" rating="0" win="1" />
+            <player username="" userid="0" name="Petr Svoboda" startposition="5" color="" score="0" new="0" rating="0" win="0" />
+        </players>
+    </play>
+</plays>

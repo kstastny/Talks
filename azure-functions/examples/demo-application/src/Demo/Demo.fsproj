@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Date.fs" />
+    <Compile Include="Rop.fs" />
+    <Compile Include="Serialization.fs" />
+    <Compile Include="Http.fs" />
+    <EmbeddedResource Include="BoardGameGeek\SampleData\plays.xml" />
+    <Compile Include="BoardGameGeek\BoardGameGeek.fs" />
+    <Compile Include="BoardGameGeek\Functions.fs" />
+    <Compile Include="BoardGameGeek\Api.fs" />
+    <EmbeddedResource Include="NemeStats\SampleData\GetPlayersInGamingGroup.json" />
+    <Compile Include="NemeStats\NemeStats.fs" />
+    <Compile Include="NemeStats\Api.fs" />
+    <Compile Include="Converter\Converter.fs" />
+    <EmbeddedResource Include="Converter\PlayerSynonyms.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Compile Include="Importer.fs" />
+  </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>

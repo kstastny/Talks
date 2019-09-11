@@ -1,0 +1,9 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+        "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+        "defaultParams:startDate": "2018-01-01",
+        "defaultParams:bggUser": "Aredhel"
+    }
+}

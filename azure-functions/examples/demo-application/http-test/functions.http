@@ -1,0 +1,25 @@
+@api = http://localhost:7071/api
+@hostkey = f
+
+
+
+
+# @api = http://functionsdemo82.azurewebsites.net/api
+# @hostkey = 
+
+
+
+
+### Hello world
+GET {{api}}/hello?name=Karel
+
+
+
+
+### Run Import
+POST {{api}}/import/run?code={{hostkey}}&datefrom=2019-01-01&dateto=2019-12-31&bggusername=Aredhel
+
+
+### Run Import with configured params
+POST {{api}}/import/run
+x-functions-key: {{hostkey}}

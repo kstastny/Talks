@@ -1,0 +1,44 @@
+{
+  "players": [
+    {
+      "playerName": "Anna Viko",
+      "playerId": 789,
+      "active": "true",
+      "currentNemesisPlayerId": 456,
+      "nemeStatsUrl": "https://nemestats.com/Player/Details/789",
+      "registeredUserGravatarUrl": null
+    },
+    {
+      "playerName": "Chris Konnel",
+      "playerId": 456,
+      "active": "true",
+      "currentNemesisPlayerId": 456,
+      "nemeStatsUrl": "https://nemestats.com/Player/Details/456",
+      "registeredUserGravatarUrl": null
+    },
+    {
+      "playerName": "The Destroyer",
+      "playerId": 111,
+      "active": "true",
+      "currentNemesisPlayerId": null,
+      "nemeStatsUrl": "https://nemestats.com/Player/Details/111",
+      "registeredUserGravatarUrl": null
+    },
+    {
+      "playerName": "Herb",
+      "playerId": 112,
+      "active": "true",
+      "currentNemesisPlayerId": 789,
+      "nemeStatsUrl": "https://nemestats.com/Player/Details/112",
+      "registeredUserGravatarUrl": null
+    },
+    {
+      "playerName": "Marvin",
+      "playerId": 745,
+      "active": "false",
+      "currentNemesisPlayerId": null,
+      "nemeStatsUrl": "https://nemestats.com/Player/Details/745",
+      "registeredUserGravatarUrl": "https://www.gravatar.com/avatar/2c9bbaaa654ca7428a6313e4e2e7e341?d=retro"
+    }
+  ]
+}

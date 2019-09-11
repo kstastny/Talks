@@ -1,0 +1,170 @@
+Azure Functions
+
+Azure Functions are Microsoft's version of serverless compute. They are an Azure service that enables you to run code without explicitly provisioning or managing infrastructure. You need neither physical nor virtual servers, not even containers to run them. Just you and the code. And your Azure account :)
+
+I will show you scenarios where Azure Functions can simplify your life as a developer but also how and when they can (sometimes) complicate it. You will see when it is useful to consider using them, how can you go about implementing them and what problems you might encounter along the way.
+
+---------------------
+
+***
+
+## Outline
+
+* Serverless
+* What are Azure Functions
+* Implementing Azure Functions
+    * Function App
+    * Triggers
+    * Bindings
+* Deployment
+* Monitoring  
+
+***
+
+NOTES regarding talk
+ * breathe well, speak clearly, slowly. make contact with the audience
+
+ * start
+    * not a talk about serverless, I want to show practical examples how to use Azure Functions and how to get started. won't be talking much about theory
+    * I want to show you how to use them, when you should consider them and give you a jumpstart if you find this technology interesting and want to try it
+
+ * hooks / Slide notes
+    * Serverless
+      * Common misunderstanding - serverless is just compute. it is not
+    * Benefits - Serverless
+      * provide value - you can devote time to your core business and not worry about collaterals
+      * outsource - provider gets economies of scale benefits, has his own specialists who know much more about operations then we'll ever do
+    * Azure Functions
+      * Stateless - should not store anything in memory between calls, state has to be read from DB, redis, shared disc, machine drive etc.
+        * static instances are shared between calls for the same instance
+        * exception - sharing connections, e.g. static HttpClient, DocumentClient (for Cosmos). see  https://github.com/Azure/azure-functions-host/wiki/Managing-Connections
+                    -  I understand it like this - static data is shared in function app (between instances) but it does not hold state (e.g. count of requests)
+        * hmm... memory cache might still be useful https://stackoverflow.com/questions/47722722/azure-functions-and-caching
+        * https://markheath.net/post/sharing-state-between-azure-functions                    
+    * Benefits - Functions
+      * Lower cost - no need to pay for the whole virtual machine that would have unused capacity
+      * Autoscaling - no silver bullet, there are still limits depending on the Hosting Plan chosen
+          * however - you don't need to configure anything, you don't care about the amount of virtual servers or app instances
+    * Drawbacks
+      * vendor lock-in: need to rewrite if moving away, but the risk of huge price increase is not big because of competition
+      * Cold start - for the whole function app, not individual functions. 
+      * Cold start can be avoided by running WarmUp function on trigger every 15 minutes. Also, Premium hosting plan solves this
+      * Versioning problems - e.g. CloudTable in trigger needs Microsoft.WindowsAzure.Storage.dll 9.3.1, workaround here https://github.com/Azure/azure-functions-host/issues/3784.
+    * Use Cases
+      * System Glue - integration of services, because it is simple to develop and there's no boilerplate. Ideal for scheduling jobs, automating processes (auto restart)
+    * DEMO Hello world
+      * possible in the portal but only good for demo purposes so we will skip.     
+      * when I first saw functions demonstrations, everybody has used Portal which drove me away. too much like stored procedures, no system, not replicable
+      * instead of attributes, we can use function.json (will not be showing) https://github.com/Azure/azure-functions-host/wiki/function.json
+          * show that this is generated      
+    * Triggers
+      * show https://docs.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings
+    * Demo application
+      * show pipeline image - warn that this is just for demo purposes and they should not architect their application like this
+      * local development
+          * Azure Storage Emulator (show), or Azurite, or Azure connection
+          * https://hub.docker.com/r/microsoft/azure-storage-emulator/
+          * https://github.com/Azure/Azurite
+      * demo
+          * HTTP Trigger with [<Out>] queue binding
+          * uncomment Queue Trigger with Blob binding
+            * show that after launch it processes requests we made before and stores data
+            * NOTE that to save multiple blobs, we would need imperative binding 
+                 see https://simonholman.blog/azure-functions-with-imperative-bindings/
+          * uncomment Blob Trigger with return value for Table Storage 
+            * two output bindings - Blob and Table
+            * show data in Table storage
+          * Function settigns
+            * show how to read, set base path necessary for local development to find settings file
+            * show how to set in Portal
+    * Securing HTTP Functions
+      * Function keys https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook#authorization-keys
+      * during development - show in portal, whitelist just one IP (deny office access)
+      * production - some just mention, I don't have experience with those
+          * gateway - sits before HTTP Functions, the functions can only be called from outbound gateway IPs
+    * Deployment
+       * CLI `func azure functionapp publish functionsdemo82` (needs `az` or `Az.Accounts` PowerShell module. login with `az login`)
+    * Hosting plans
+       * Consumption - you can set quota in GB-Sec (in Function app settings)
+          *  An instance of the host is the entire function app, meaning all functions within a function app share resource within an instance and scale at the same time
+       * Premium - VNet connectivity, warm functions, function can run for longer, more performant VMs, possible multicore, more memory
+    * Monitoring
+      * Show how to stream logs (fileLoggingMode always)
+      * Show where to see function executions and how to drill down
+      * Show traces - appInsights | Logs (Analytics) | traces
+    * Q&A
+      * do you have any experience with Azure Functions? When did you use them, what did you think about them?      
+
+
+
+NOTES GARBAGE BELOW, TREAD LIGTLY
+----------------------------------
+
+poznámky pro příště
+ * Meetup - priste ne tak kontrastni pozadi (může být i ve tmě, takže VS code předem na solarized dark, obrázky v přednášce ne bílé, ale aspoň trochu šedé pozadí)
+
+
+- log level settings v host.json https://stackoverflow.com/questions/53405020/configure-loglevel-of-azure-function-using-environment-variables
+- ukázat ExecutionContext (čtení konfigurace)
+- reálný příklad - jak strukturovat
+- vývoj: "AzureWebJobsStorage": "UseDevelopmentStorage=true", + jak nastavit po nasazení
+    musí běžet Azure Storage Emulator
+    https://stackoverflow.com/questions/33765141/azure-table-storage-no-connection-could-be-made-because-the-target-machine-act
+    https://markgossa.blogspot.com/2018/12/azure-function-listener-for-function.html
+    https://docs.microsoft.com/en-us/azure/storage/common/storage-use-emulator !
+    Emulator init problems
+      - https://stackoverflow.com/questions/53673763/azure-storage-emulator-fails-to-init-with-the-database-azurestorageemulatordb5
+      - create DB manually (clashes with something, SQL 2019? or LocalDB? who knows)
+    Emulator run problems
+       - The listener for function 'RemoveDevLogsTimer' was unable to start. Microsoft.WindowsAzure.Storage: Server encountered an internal error. Please try again after some time.
+       - asi práva?
+        - 5.8 a vyšší používá jako default `blobs` a ty nefungují? to je asi přístupem k té DB řekl bych..
+        viz https://blog.maximerouiller.com/post/fixing-azure-functions-and-azure-storage-emulator-58-issue/ a https://github.com/Azure/azure-functions-host/wiki/Changes-to-Key-Management-in-Functions-V2
+        ale tohle taky nepomůže
+      - > AzureStorageEmulator.exe init -forceCreate -inprocess               
+
+    poslední zkoušený postup
+     * ručně vytvořit DB v cestě c:\Work\localDBs\ (mimo user account)
+     * AzureStorageEmulator.exe  init, s parametrem -inprocess
+     * emulator start
+     * => stále stejná chyba, vzdávám to a připojím se k Azure.
+     * našel jsem logy - problém je, že se nevytvoří tabulky. hm, hm, hm. a init nefunguje - problém byl v tom, že nefunguje s LocalDB
+     
+
+
+SMART Azure Functions - určitě zmínit security, že lokálně projde vše, ale je kontrolováno na Azure. ukázat jak nastavit, co které nastavení znamená
+
+
+Durable Functions
+https://docs.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-bindings
+
+
+* https://blog.jetbrains.com/dotnet/2019/05/09/building-azure-functions-sql-database-improvements-azure-toolkit-rider-2019-1/
+
+* https://azure.microsoft.com/cs-cz/free/             
+* https://azure.microsoft.com/en-us/features/storage-explorer/ pro kontrolu storage
+
+
+
+https://docs.microsoft.com/en-us/azure/azure-functions/functions-best-practices
+
+https://docs.microsoft.com/en-us/azure/architecture/antipatterns/improper-instantiation/
+
+
+projít best practices, antipatterns - s tím HttpClient jsem to ale nepochopil https://github.com/Azure/azure-functions-host/issues/1806
+aha, je to tady https://docs.microsoft.com/en-us/azure/azure-functions/manage-connections
+  zdá se, že stačí použít static - otestovat, ale bylo by to fajn
+
+
+
+https://serverlesslibrary.net/ - Azure Functions and Logic Apps - open source use cases
+
+
+https://martinfowler.com/articles/serverless.html#unpacking-faas
+   great long article
+
+
+Azure Storage Emulator - https://docs.microsoft.com/en-us/azure/storage/common/storage-use-emulator
+
+Queue settings - https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-queue#hostjson-settings
+TODO nastudovat zpracování, poison queue v tomto případě

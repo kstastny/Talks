@@ -1,0 +1,23 @@
+group Server
+
+    FSharp.Core
+    Microsoft.NET.Sdk.Functions
+    Microsoft.Identity.Client
+    Microsoft.Extensions.Configuration
+    Microsoft.Extensions.Configuration.Json
+    Microsoft.Extensions.Configuration.EnvironmentVariables
+    Microsoft.Extensions.Configuration.FileExtensions
+    
+    Microsoft.Azure.WebJobs.Extensions.Storage
+    WindowsAzure.Storage
+
+    TaskBuilder.fs
+
+    Newtonsoft.Json
+    
+    Serilog
+    Serilog.AspNetCore
+    Serilog.Sinks.Console
+    Serilog.Sinks.File
+    Serilog.Formatting.Compact
+    Destructurama.FSharp.NetCore
