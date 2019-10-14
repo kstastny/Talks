@@ -20,7 +20,8 @@ For more information see http://fsprojects.github.io/FsReveal/getting-started.ht
 
 ## Demo
 
-TODO PREPARE THE EXAMPLES
+Directory `examples/demo-application` contains demo application.
 
+## Video Recording
 
-Directories `examples_csharp` and `examples_fsharp` contain examples accompanying the presentation.
+See https://www.youtube.com/watch?v=FGaycypBtGs

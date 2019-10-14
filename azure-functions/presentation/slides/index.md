@@ -242,23 +242,6 @@
 ***
 
 
-### Securing HTTP Functions
-
-* App Service Authentication / Authorization (Authentication Providers)
-* Azure API Management (APIM)
-* Azure App Service Environment (ASE)
-* Any other Gateway
-* custom Authentication and Authorization
-
-' Gateway - whitelist access to function for gateway IP, auth on gateway side
-' https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook#secure-an-http-endpoint-in-production
-' Authentication Providers - same as App Services (Azure AD, MS Account, Google, Facebook, Twitter, custom)
-' custom https://www.ben-morris.com/custom-token-authentication-in-azure-functions-using-bindings/
-
-
-***
-
-
 ### Deployment
 
 * Manual

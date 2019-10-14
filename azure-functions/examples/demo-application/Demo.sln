@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Demo", "Demo\Demo.fsproj", "{2126C653-CBC9-4002-A8A4-608945242593}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Demo", "src\Demo\Demo.fsproj", "{2126C653-CBC9-4002-A8A4-608945242593}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Demo.FunctionApp", "Demo.FunctionApp\Demo.FunctionApp.fsproj", "{77E37E31-B151-4CB9-A074-E98F2A937549}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Demo.FunctionApp", "src\Demo.FunctionApp\Demo.FunctionApp.fsproj", "{77E37E31-B151-4CB9-A074-E98F2A937549}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
