@@ -1,6 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "BasicPipeline", "BasicPipeline\BasicPipeline.fsproj", "{444BE2B6-1051-4727-AB68-1FB76DC62FEC}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "BasicPipeline", "BasicPipeline\BasicPipeline.fsproj", "{74D21A15-350C-46F3-AA4F-635F454BA850}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ParallelBatchProcessing", "ParallelBatchProcessing\ParallelBatchProcessing.fsproj", "{61A36057-1EC1-4FF2-85C9-E8460643F791}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "BackPressureLoadShedding", "BackPressureLoadShedding\BackPressureLoadShedding.fsproj", "{19852B33-F217-423F-A121-A83C153EDA21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +12,17 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{444BE2B6-1051-4727-AB68-1FB76DC62FEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{444BE2B6-1051-4727-AB68-1FB76DC62FEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{444BE2B6-1051-4727-AB68-1FB76DC62FEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{444BE2B6-1051-4727-AB68-1FB76DC62FEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74D21A15-350C-46F3-AA4F-635F454BA850}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74D21A15-350C-46F3-AA4F-635F454BA850}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74D21A15-350C-46F3-AA4F-635F454BA850}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74D21A15-350C-46F3-AA4F-635F454BA850}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61A36057-1EC1-4FF2-85C9-E8460643F791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61A36057-1EC1-4FF2-85C9-E8460643F791}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61A36057-1EC1-4FF2-85C9-E8460643F791}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61A36057-1EC1-4FF2-85C9-E8460643F791}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19852B33-F217-423F-A121-A83C153EDA21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19852B33-F217-423F-A121-A83C153EDA21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19852B33-F217-423F-A121-A83C153EDA21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19852B33-F217-423F-A121-A83C153EDA21}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

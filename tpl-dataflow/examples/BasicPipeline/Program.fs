@@ -4,13 +4,6 @@ open System.Threading.Tasks.Dataflow
 
 open FSharp.Control.Tasks.V2
 
-/// Recursive to make it slow on purpose
-let rec fibRec n =
-    match n with
-    | 0 -> 0
-    | 1 -> 1
-    | _ -> fibRec (n-1) + fibRec (n-2)
-    
 let fib n =    
     match n with
     | 0 -> 0L
@@ -67,6 +60,7 @@ let startPipeline () =
     
     
 let rec nextCommand f =
+    printf "How many Fibonacci numbers do you want to calculate? "
     let cmd = Console.ReadLine ()
     match Int32.TryParse cmd with
     | (false, _) -> 0
@@ -82,5 +76,3 @@ let main _ =
     let postFib = startPipeline ()
     
     nextCommand postFib
-    
-     

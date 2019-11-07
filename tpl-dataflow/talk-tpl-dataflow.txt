@@ -14,6 +14,7 @@ TODO KE KAŽDÉMU SLIDU PŘIPRAVIT A NASTUDOVAT CO ŘÍKAT!
 OUTLINE
     * k čemu je TPL DataFlow, obecně definice
     * informace o pipes & filters pattern ?
+        * https://docs.microsoft.com/en-us/azure/architecture/patterns/_images/pipes-and-filters-message-queues.png                
     * jak zhruba funguje 
         * jak vypadá pipeline
             * definice viz https://www.biostars.org/p/17696/
@@ -47,6 +48,38 @@ OUTLINE
 NOTES regarding talk
  * breathe well, speak clearly, slowly. make contact with the audience
  * skip filling words like hmm, ahhhh, etc.
+
+SLIDE NOTES
+    * TPL Dataflow
+        * dataflow - https://en.wikipedia.org/wiki/Dataflow
+    * TPL Dataflow (advantages)
+        * alternatives for some tasks - Parallel.ForEach, Rx.NET for some reactive apps, Concurrect Collections
+    * Dataflow blocks
+        * TODO talk about info from https://blog.stephencleary.com/2012/09/introduction-to-dataflow-part-1.html
+    * Linking Blocks
+        * explain how the buffers are filled, when input buffer, when output buffer
+    * DEMO simple pipeline
+        * TODO show - how it runs sequentially in context of one block
+        * TODO show - how it can run in parallel in context of one block
+        * explain how to setup everything - how to create and link blocks, how to send data (Post and Async), how to receive data (ActionBlock or AsObservable)
+    * Error Handling
+       * faulted block - when function in block throws unhandled exception, block moves to faulted state, stops accepting data. recommendation - always try..catch, return Results
+       * await .Completion on last block to catch exceptions
+       * PropagateCompletion also propagates errors
+    * Demo Completiona and error handling
+        * block completion, two ways to do the processing
+        * show error handling
+    * Message Propagation
+        * multiple targets - each message goes to the first block that accepts it
+            * if multiple targets needs to process the same message, it needs to be duplicated
+                * either TransformMany and filter - backpressure
+                * or BroadcastBlock - load shedding
+        * multiple sources - self explanatory, but show message aggregation
+    * Back-Pressure and Load Shedding
+        * explain the situation that leads to that, see https://jack-vanlightly.com/blog/2018/4/18/processing-pipelines-series-tpl-dataflow
+        * BroadcastBlock - allows load shedding, because it only keeps one message and it gets overwritten if it's not propagated
+        * if we want pub/sub with backpressure, we have to use TransformManyBlock
+        
 
 
 --------
