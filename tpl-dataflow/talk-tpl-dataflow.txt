@@ -1,0 +1,171 @@
+﻿Everyone know what is Task Parallel Library (TPL), but the Dataflow part of TPL is not very widely known. 
+TPL Dataflow brings us effective techniques for running parallel problems in fully asynchronous environment and provides components to increase the robustness and programmer control of concurrent applications. It greatly simplifies your life when you need to implement concurrent processing, parallel workflow and batch queueing.
+Let's explore this library and example use cases it helps to solve.
+
+
+
+https://skillsmatter.com/skillscasts/13734-lightning-talk-how-to-give-amazing-technical-presentations
+správně dýchat, rozcvičit hlasivky. udržovat oční kontakt s publikem, procvičit prezentaci, několikrát nahlas, někomu
+
+https://robwalling.com/2019/09/30/the-3-aspects-of-a-great-conference-talk/ - dát tomu trochu šťávy
+
+TODO KE KAŽDÉMU SLIDU PŘIPRAVIT A NASTUDOVAT CO ŘÍKAT!
+
+OUTLINE
+    * k čemu je TPL DataFlow, obecně definice
+    * informace o pipes & filters pattern ?
+    * jak zhruba funguje 
+        * jak vypadá pipeline
+            * definice viz https://www.biostars.org/p/17696/
+        * "filters" - dataflow blocks in TPL Dataflow
+            * source, transform, target
+            * anatomy
+        * "pipes" - links between datablocks
+        * simple example (F#) - one solution, tpl-dataflow-demos.sln
+            * console app - inputs number and calculates that many fibonacci numbers (as long)
+            * blocks - transformblock - parallel, actionblock (print result) - just one at once
+            * show control - different count of instances
+            * write the time it took to process all
+        * error handling, error propagation
+        * block completion
+            * example - parallel batch processing - calculate all numbers in batch, limited but create block on the fly and THEN return all results (see limits in DPE)       
+    * příklady využití
+        * workflow, pipeline - jaký příklad? Riccardo Terell asi?
+            * + alternativa (Rx.NET, kdy Rx a kdy TPL DataFlow)
+        * limit concurrency    
+            * + alternativy (SemaphoreSlim, BlockingCollection - ale blocking)
+            * https://blogs.msdn.microsoft.com/fkaduk/2018/09/02/multiple-ways-how-to-limit-parallel-tasks-processing/
+            * https://markheath.net/post/constraining-concurrent-threads-csharp
+            * https://dejanstojanovic.net/aspnet/2018/august/limit-number-of-tasks-running-in-parallel-in-net/
+            * viz DPE RUN THROTTLED, ale výstup do ActionBlocku
+        * async with huge data streams? viz dole, streamování dat z DB
+            * resp. místo toho ten příklad od Riccardo Terella?
+        * další?
+
+ 
+
+NOTES regarding talk
+ * breathe well, speak clearly, slowly. make contact with the audience
+ * skip filling words like hmm, ahhhh, etc.
+
+
+--------
+
+TPL DATAFLOW
+* asynchronous and parallel data processing
+    * RX NET is not "concurrency framework", see http://introtorx.com/Content/v1.0.10621.0/15_SchedulingAndThreading.html#TaskPool
+* also uses reactive model (push based. see https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow)
+* builds on TAP https://docs.microsoft.com/en-us/dotnet/standard/asynchronous-programming-patterns/task-based-asynchronous-pattern-tap
+* The TPL DataFlow library eases concurrent processing and implements tailored asynchronous parallel workflow and batch queuing.
+* workflow can scale different steps of the process independently
+* NuGet `System.Threading.Tasks.Dataflow`
+* promotes actor-based programming. TODO PREPARE SOMETHING ABOUT THAT
+    * or agent-based? see https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow and google for difference
+    * https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/dataflow-task-parallel-library actor-based
+* compatible with Rx (IObservable)
+* explicit control over how data is buffered (unline Rx). Rx - more functional paradigm, coordination and composition of streams
+* seems ideal for pipelining
+* finer control - see first comment  http://blog.i3arnon.com/2016/05/23/tpl-dataflow/
+* alternatives - manual workers. BlockingCollection (BUT does not support async, blocks thread so this is more efficient)
+* does not support batching by time! (might be solved by combining with RX)
+* errors - unhandled exception sets the block to faulted state, might propagate. is similar to RX. see https://jack-vanlightly.com/blog/2018/4/18/processing-pipelines-series-tpl-dataflow
+        * Whenn buffers are full, we cannot choose to eject messages from the head of the buffer. The incoming and outgoing buffers are basically FIFO queues. The behaviour is to prevent new messages entering the queue, protecting the existing messages. This favours older messages over new ones. RabbitMQ does the opposite and ejects messages from the head of the queue when a message arrives at a full queue. This favours new messages over old. It would be nice to be able to choose between both models. For our real-time publishing requirements, we definitely favour new messages over older ones.
+
+* vs. RX: more control over pipeline, less overhead (marginally, could be just the way I setup the things). A bit more awkward to setup
+    * https://stackoverflow.com/questions/14403054/what-are-the-differences-between-tpl-dataflowtdf-and-reactive-extensions
+        - Rx = Observables + LINQ + Schedulers
+    * https://stackoverflow.com/questions/35974063/where-to-draw-the-line-with-reactive-programming
+        If you do not have control of the event stream and you must respond at the rate of the event stream then Rx is a good candidate.
+        - z našeho hlediska - DPE node kontroluje event stream nebo ne? high level nekontroluje a odpovídat musí, ale celá aplikace. Jeden node kontroluje kolik si vezme 
+    *  z našeho hlediska - TPL má přirozenější kontrolu konkurence než RX, ale je v něčem omezenější. Má buffery v blokách
+    * why Rx http://introtorx.com/Content/v1.0.10621.0/01_WhyRx.html - tam jsou popsané případy kdy ano a kdy ne. 
+
+TODO example ideas
+    - zpracování souborů (komprese a enkrypce, viz příklad od Ricardo Terell)    
+    - limit access to external resource (number of concurrent executions, calls to third party API)
+
+exception handling
+ - https://devblogs.microsoft.com/pfxteam/exception-handling-in-tpl-dataflow-networks/    
+
+- some examples https://michaelscodingspot.com/c-job-queues-part-3-with-tpl-dataflow-and-failure-handling/
+
+purpose
+    batch-processing pipelines
+    parallel stream processing
+    data buffering, or joining and
+    processing in batch data from one or more sources.
+
+main strength - composition of processing blocks
+
+* producer-consumer pattern
+    * throttling - maximum block capacity (`DataFlowBlockOptions.BoundedCapacity`)
+
+* consume - with discard, with backpressure
+        - backPressure - BufferBlock, using SendAsync. see https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow
+        - or see Jack Vanlighty
+
+https://blog.stephencleary.com/2012/09/introduction-to-dataflow-part-1.html
+https://blog.stephencleary.com/2012/09/introduction-to-dataflow-part-2.html
+https://blog.stephencleary.com/2012/10/introduction-to-dataflow-part-3.html
+
+
+* blocks
+    * source block (can be read from), target block (can be written to), propagator block
+    * `BufferBlock` - input and buffer data. Only one target will receive given message, if it has multiple targets
+    * `TransformBlock` - mapping function
+        * The TPL Dataflow documentation guarantees that the TransformBlock will propagate the messages in the same order in which they arrived.
+         (from https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow)
+         * can be disabled - set `EnsureOrdered` to false. see https://www.blinkingcaret.com/2019/05/15/tpl-dataflow-in-net-core-in-depth-part-1/
+    * `ActionBlock` - tee function, side effect
+    * `BroadCastBlock` - propagates messages to more than one output
+            * but drops them if they cannot be sent!
+            * can be replaced by `TransformMany` block, see https://social.msdn.microsoft.com/Forums/en-US/69f65dd4-f802-4cb6-afbb-e0309f939fe9/broadcastblock-with-guaranteed-delivery-and-back-pressure?forum=tpldataflow
+                * outputs multiple copies and then each branch takes the copy that is meant for it
+                * example here https://jack-vanlightly.com/blog/2018/4/19/processing-pipelines-series-tpl-dataflow-alternate-scenario
+                * pokud danou zprávu nic nepřečte, celá pipeline se zablokuje (a to i u TransformMany). viz https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/dataflow-task-parallel-library hledat deadlock
+
+
+* blocks are linked using .LinkTo extension method
+* by default, each block processes one item at a time sequentially. Blocks are independent so each can process different item at the same time
+    * `DataFlowBlockOptions.MaxDegreeOfParallelism` allows parallel processing
+* Completion State - has completionTask that allows to wait until the processing ends. In case of errors, the CompletionTask contains the error, as is usual in TPL
+
+* `PropagateCompletion`
+
+* Schedulers
+    * `ConcurrentExclusiveSchedulerPair` - umožní, že více bloků má stejné omezení konkurence, příp. více bloků běží sekvenčně
+
+use cases
+ * Async with huge data streams https://stackoverflow.com/questions/24966019/async-with-huge-data-streams/24966167#24966167
+ * https://stackoverflow.com/questions/34843224/task-startnew-parallel-foreach-doesnt-await/34843290#34843290
+ * https://stackoverflow.com/questions/34360772/batch-processing-in-mvc5-website/34361999#34361999 Batch processing - limit the concurrency
+ * https://stackoverflow.com/questions/27841790/how-to-use-threads-for-processing-many-tasks/27842076#27842076 parallel processing
+ * https://stackoverflow.com/questions/26009333/how-to-use-task-parallel-library-tpl-with-load-balancing-and-limited-degree-of/26009467#26009467 limit number of parallel calls to a system
+ * building pipelines
+ * 
+
+from https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow
+    The concept behind the TPL DataFlow library is to ease the creation of multiple patterns, such as:
+        batch-processing pipelines
+        parallel stream processing
+        data buffering, or joining and
+        processing in batch data from one or more sources.
+
+
+TODO example
+    * call external API, run all calls at once
+    * alternative - async call, see https://stackoverflow.com/questions/34360772/batch-processing-in-mvc5-website/34361999#34361999 and DPE
+
+sources
+ * https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow - Ricardo Terell, autor Concurrency in .NET
+        source code https://github.com/dotnetcurry/TPL-Dataflow
+        conclusion
+            § A system written using TPL DataFlow benefits from a multicore system because all the blocks that compose a workflow can run in parallel.
+            § The TPL Dataflow enables effective techniques for running embarrassingly parallel problems, where many independent computations can be executed in parallel in an evident way.
+            § The TPL Dataflow has built-in support for throttling and asynchrony, improving both the I/O-bound and CPU-bound operations. In particular, it provides the ability to build responsive client applications while still getting the benefits of massively parallel processing.
+            § The TPL Dataflow can be used to parallelize the workflow to compress and encrypt a large stream of data by processing blocks at different rates.
+            § The combination and integration with Rx and TPL Dataflow simplifies the implementation of parallel CPU and I/O-intensive applications, while also providing developers explicit control over how data is buffered.
+ * https://www.blinkingcaret.com/2019/05/15/tpl-dataflow-in-net-core-in-depth-part-1/           
+ * https://jack-vanlightly.com/blog/2018/4/17/processing-pipelines-series-introduction whole series
+         https://jack-vanlightly.com/blog/2018/4/18/processing-pipelines-series-tpl-dataflow
+ * https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/dataflow-task-parallel-library             

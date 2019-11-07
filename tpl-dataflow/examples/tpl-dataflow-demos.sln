@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "BasicPipeline", "BasicPipeline\BasicPipeline.fsproj", "{444BE2B6-1051-4727-AB68-1FB76DC62FEC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{444BE2B6-1051-4727-AB68-1FB76DC62FEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{444BE2B6-1051-4727-AB68-1FB76DC62FEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{444BE2B6-1051-4727-AB68-1FB76DC62FEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{444BE2B6-1051-4727-AB68-1FB76DC62FEC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
