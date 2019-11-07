@@ -8,6 +8,8 @@
 
 # Azure Functions
 
+## Karel Šťastný
+
 
 ***
 
@@ -118,7 +120,7 @@
 * v1 - .NET Framework 4.7
 * v2 - .NET Core 2.2
     * recommended version
-    * support for some languages dropped (bash, php, F# Scripts)
+    * support for some languages dropped (F# Scripts, bash, php)
 
 ' https://docs.microsoft.com/en-us/azure/azure-functions/functions-versions
 ' I will show v2 only
@@ -226,7 +228,7 @@
 
 ### Securing HTTP Functions
 
-* Function Keys
+* Authorization Keys
     * Host Keys
     * Function Keys
 * IP Whitelisting
@@ -276,12 +278,12 @@
 
 * different plans have different [limits](https://docs.microsoft.com/en-us/azure/azure-functions/functions-scale)
 
-' pricing differes
+' pricing differs
 ' App Service - you have to set the scaling correctly but you pay nothing extra ("only" for the app service plan)
 ' Premium - consumption with extra features (no cold start, unlimited execution duration, ...)
 ' https://docs.microsoft.com/en-us/azure/azure-functions/functions-scale
 ' Consumption plan - can be limited by daily usage quota. https://azure.microsoft.com/is-is/pricing/details/functions/
-' minimum execution time and memory for a single function execution is 100 ms and 128 mb respectively (i.e. one run is minimum of 1/80 GB-sec)
+' minimum execution time and memory for a single function execution is 100 ms and 128 MB respectively (i.e. one run is minimum of 1/80 GB-sec)
 
 
 
