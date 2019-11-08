@@ -46,7 +46,6 @@
 <p class="reference"><a href="https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow">https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow</a></p>  
 
 
-' TODO my own image of pipeline (just multiple boxes connected by lines) ?
 ' Blocks compose pipelines and networks
 ' Composable - big strength, blocks can be reordered, removed, added, even during runtime
 
@@ -74,7 +73,7 @@
 
 ## Linking Blocks
 
-* Blocks are connected by "linking" them together
+![](images/block-link.png)
 
 `source.LinkTo(target)`
 
@@ -110,37 +109,49 @@
 
 ***
 
-## Block examples
+### TransformBlock
 
-* `TransformBlock`
-* `TransformManyBlock`
-* `BroadcastBlock`
-* `BatchBlock`
-* `JoinBlock`
+![](images/block-transformblock.png)
 
-TODO prepare explanation and examples
-
-' TODO https://www.blinkingcaret.com/2019/06/05/tpl-dataflow-in-net-core-in-depth-part-2/
+' https://www.blinkingcaret.com/2019/06/05/tpl-dataflow-in-net-core-in-depth-part-2/
 ' https://jack-vanlightly.com/blog/2018/4/18/processing-pipelines-series-tpl-dataflow + docs
 
 ***
 
-## Message propagation
+### TransformManyBlock
 
-* multiple targets - pub/sub, many blocks processing one message
-* multiple sources - different sources, message aggregation
-* target - consume, postpone or decline message
-
-TODO example - pub/sub
-TODO example - aggregation 
-TODO example - postpone or decline message - maybe remove this?
+![](images/block-transformmanyblock.png)
 
 ***
 
-## Back-Pressure and Load Shedding
+### BroadcastBlock
 
-* `BroadcastBlock` vs `TransformManyBlock`
+![](images/block-broadcastblock.png)
 
+
+***
+
+### BatchBlock
+
+![](images/block-batchblock.png)
+
+***
+
+### JoinBlock
+
+![](images/block-joinblock.png)
+
+***
+
+### **DEMO** Block Types
+
+> BlockSamples
+
+***
+
+### Back-Pressure and Load Shedding
+
+' `BroadcastBlock` vs `TransformManyBlock`
 ' https://jack-vanlightly.com/blog/2018/4/18/processing-pipelines-series-tpl-dataflow
 
 ***
@@ -152,23 +163,31 @@ TODO example - postpone or decline message - maybe remove this?
 
 ***
 
-## "Case Study" 
+### Example - Processing Pipelines
 
-TODO maybe different slide name
+![](images/jack-vanlighty.png)
 
-* https://github.com/Vanlightly/StreamProcessingSeries
+* https://jack-vanlightly.com/blog/2018/4/18/processing-pipelines-series-tpl-dataflow ([Source Code](https://github.com/Vanlightly/StreamProcessingSeries/tree/master/src/net-apps/InProcStreamProcessing.TplDataflow))
 
-TODO example from Riccardo Terrell, if I use it
-    - probably a nice example of pipeline, read https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow and study the code
-TODO alternative - Jack Vanlighty
+
+***
+
+
+### Example - Processing a Large Stream of data
+
+![](images/ricardo-terrell.png)
+
+* https://jack-vanlightly.com/blog/2018/4/18/processing-pipelines-series-tpl-dataflow ([Source Code](https://github.com/dotnetcurry/TPL-Dataflow))
+
 
 ***
 
 ## Sources
 
 * You can find this talk on my github https://github.com/kstastny/Talks
-* https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow
-* https://jack-vanlightly.com/blog/2018/4/18/processing-pipelines-series-tpl-dataflow
+* [Ricardo Terrell](https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow)
+* [Jack Vanlighty: Processing Pipelines Series](https://jack-vanlightly.com/blog/2018/4/18/processing-pipelines-series-tpl-dataflow)
+* [Dataflow documentation](https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/dataflow-task-parallel-library)
 
 ***
 

@@ -49,6 +49,14 @@ NOTES regarding talk
  * breathe well, speak clearly, slowly. make contact with the audience
  * skip filling words like hmm, ahhhh, etc.
 
+to refresh knowledge, read
+ * https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow
+ * https://jack-vanlightly.com/blog/2018/4/18/processing-pipelines-series-tpl-dataflow
+ * https://blog.stephencleary.com/2012/10/introduction-to-dataflow-part-3.html
+ * https://www.blinkingcaret.com/2019/06/05/tpl-dataflow-in-net-core-in-depth-part-2/
+ 
+
+
 SLIDE NOTES
     * TPL Dataflow
         * dataflow - https://en.wikipedia.org/wiki/Dataflow
@@ -79,7 +87,9 @@ SLIDE NOTES
         * explain the situation that leads to that, see https://jack-vanlightly.com/blog/2018/4/18/processing-pipelines-series-tpl-dataflow
         * BroadcastBlock - allows load shedding, because it only keeps one message and it gets overwritten if it's not propagated
         * if we want pub/sub with backpressure, we have to use TransformManyBlock
-        
+    * Block examples
+        * show the pipeline
+        * show ensure ordered true/false (true works for join)
 
 
 --------

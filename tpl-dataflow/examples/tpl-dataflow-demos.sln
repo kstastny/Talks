@@ -6,6 +6,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ParallelBatchProcessing", "
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "BackPressureLoadShedding", "BackPressureLoadShedding\BackPressureLoadShedding.fsproj", "{19852B33-F217-423F-A121-A83C153EDA21}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "BlockSamples", "BlockSamples\BlockSamples.fsproj", "{8F8065B8-086D-4107-A83D-63C431FA17C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{19852B33-F217-423F-A121-A83C153EDA21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19852B33-F217-423F-A121-A83C153EDA21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19852B33-F217-423F-A121-A83C153EDA21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F8065B8-086D-4107-A83D-63C431FA17C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F8065B8-086D-4107-A83D-63C431FA17C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F8065B8-086D-4107-A83D-63C431FA17C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F8065B8-086D-4107-A83D-63C431FA17C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

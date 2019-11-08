@@ -37,12 +37,11 @@ let fibonacciBlock =
         
         
 let loadSheddingPipeline =
-    
     let broadcastBlock = BroadcastBlock(fun x -> x)
-    
     broadcastBlock.LinkTo(fibonacciBlock) |> ignore
-    
     broadcastBlock
+
+
 
 let rec postWithBackPressure (block: ITargetBlock<int>) n =
     async {
