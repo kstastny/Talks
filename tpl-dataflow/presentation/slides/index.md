@@ -17,22 +17,15 @@
 * dataflow and pipelining tasks
 * actor-based
 * asynchronous
-* explicit control
 
 ***
 
-## TPL Dataflow
+### Advantages
 
-* increase robustness of concurrency-enabled applications
-* enables effective techniques for running embarrassingly parallel problems
-* built-in support for throttling and asynchrony
-* explicit control over how data is buffered and moves around the system
-* obviates the need for synchronization locks 
-
-
-' explain embarrassingly parallel
-' https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow 
-' https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/dataflow-task-parallel-library
+* robust concurrent applications
+* embarrassingly parallel problems
+* no need for locks
+* explicit control
 
 
 ***
@@ -85,12 +78,15 @@
 
 > BasicPipeline
 
+![](images/tpl-dataflow-basic-pipeline.png)
+
 ***
 
 ## Block Completion
 
-* blocks should not expect any more messages
-* allows a block to finish processing messages
+* pipeline does not need to be eternal
+* `Complete` method
+* `Completion` Task
 
 ***
 
@@ -100,6 +96,14 @@
 * Error Propagation
 
 ' see https://jack-vanlightly.com/blog/2018/4/18/processing-pipelines-series-tpl-dataflow
+
+***
+
+### Error Propagation
+
+![](images/tpl-workflow.png)
+
+<p class="reference"><a href="https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow">https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow</a></p>  
 
 ***
 
@@ -117,6 +121,11 @@
 ' https://jack-vanlightly.com/blog/2018/4/18/processing-pipelines-series-tpl-dataflow + docs
 
 ***
+### BroadcastBlock
+
+![](images/block-broadcastblock.png)
+
+***
 
 ### TransformManyBlock
 
@@ -124,28 +133,19 @@
 
 ***
 
-### BroadcastBlock
-
-![](images/block-broadcastblock.png)
-
-
-***
-
-### BatchBlock
-
-![](images/block-batchblock.png)
-
-***
-
 ### JoinBlock
 
 ![](images/block-joinblock.png)
+
+
 
 ***
 
 ### **DEMO** Block Types
 
 > BlockSamples
+
+![](images/tpl-dataflow-block-samples-demo.png)
 
 ***
 
@@ -177,7 +177,7 @@
 
 ![](images/ricardo-terrell.png)
 
-* https://jack-vanlightly.com/blog/2018/4/18/processing-pipelines-series-tpl-dataflow ([Source Code](https://github.com/dotnetcurry/TPL-Dataflow))
+* https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow ([Source Code](https://github.com/dotnetcurry/TPL-Dataflow))
 
 
 ***

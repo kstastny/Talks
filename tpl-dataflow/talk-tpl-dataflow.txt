@@ -60,23 +60,45 @@ to refresh knowledge, read
 SLIDE NOTES
     * TPL Dataflow
         * dataflow - https://en.wikipedia.org/wiki/Dataflow
+        * example - IoT processing, processing GPS position messages
     * TPL Dataflow (advantages)
+        * explicit control over how data is buffered and moves around the system
+        * increase robustness of concurrency-enabled applications
+        * effective techniques for running embarrassingly parallel problems
+        * built-in support for throttling and asynchrony
+        * obviates the need for synchronization locks 
+            ' explain embarrassingly parallel
+            ' https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow 
+            ' https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/dataflow-task-parallel-library
+
         * alternatives for some tasks - Parallel.ForEach, Rx.NET for some reactive apps, Concurrect Collections
     * Dataflow blocks
         * TODO talk about info from https://blog.stephencleary.com/2012/09/introduction-to-dataflow-part-1.html
     * Linking Blocks
         * explain how the buffers are filled, when input buffer, when output buffer
     * DEMO simple pipeline
-        * TODO show - how it runs sequentially in context of one block
-        * TODO show - how it can run in parallel in context of one block
-        * explain how to setup everything - how to create and link blocks, how to send data (Post and Async), how to receive data (ActionBlock or AsObservable)
+        * show what we're going to do and explain how to setup everything - TransformBlock, ActionBlock, link
+        * show how to .Post/.SendAsync data and what are the possible results
+        * show - how it runs sequentially in context of one block
+        * show - how it can run in parallel in context of one block
+    * Block Completion
+        * what if we want to finish the pipeline and get the results? 
+        * pipeline can finish after all input data is processed
+        * `Complete` method - blocks should not expect any more messages
+        * allows a block to finish processing messages        
     * Error Handling
        * faulted block - when function in block throws unhandled exception, block moves to faulted state, stops accepting data. recommendation - always try..catch, return Results
        * await .Completion on last block to catch exceptions
        * PropagateCompletion also propagates errors
-    * Demo Completiona and error handling
+            *  explain - pipeline image 
+    * Demo Completion and error handling
+        * another scenario why this is useful - you can use TPL Dataflow to limit concurrency when processing big batches of data
         * block completion, two ways to do the processing
         * show error handling
+    * Demo Block Types
+        * show the pipeline
+        * show what happens when we have more numbers than the capacity (load shedding)
+        * show `EnsureOrderd`
     * Message Propagation
         * multiple targets - each message goes to the first block that accepts it
             * if multiple targets needs to process the same message, it needs to be duplicated
