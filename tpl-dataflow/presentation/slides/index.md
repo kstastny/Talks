@@ -23,9 +23,11 @@
 ### Advantages
 
 * robust concurrent applications
-* embarrassingly parallel problems
+* easy parallelization
 * no need for locks
 * explicit control
+* throttling
+
 
 
 ***
@@ -121,17 +123,19 @@
 ' https://jack-vanlightly.com/blog/2018/4/18/processing-pipelines-series-tpl-dataflow + docs
 
 ***
-### BroadcastBlock
-
-![](images/block-broadcastblock.png)
-
-***
 
 ### TransformManyBlock
 
 ![](images/block-transformmanyblock.png)
 
 ***
+
+### BroadcastBlock
+
+![](images/block-broadcastblock.png)
+
+***
+
 
 ### JoinBlock
 

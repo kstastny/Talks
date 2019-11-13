@@ -9,6 +9,8 @@ správně dýchat, rozcvičit hlasivky. udržovat oční kontakt s publikem, pro
 
 https://robwalling.com/2019/09/30/the-3-aspects-of-a-great-conference-talk/ - dát tomu trochu šťávy
 
+https://riskology.co/public-speaking-introvert/
+
 TODO KE KAŽDÉMU SLIDU PŘIPRAVIT A NASTUDOVAT CO ŘÍKAT!
 
 OUTLINE
@@ -52,6 +54,8 @@ NOTES regarding talk
 to refresh knowledge, read
  * https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow
  * https://jack-vanlightly.com/blog/2018/4/18/processing-pipelines-series-tpl-dataflow
+ * https://blog.stephencleary.com/2012/09/introduction-to-dataflow-part-1.html
+ * https://blog.stephencleary.com/2012/09/introduction-to-dataflow-part-2.html
  * https://blog.stephencleary.com/2012/10/introduction-to-dataflow-part-3.html
  * https://www.blinkingcaret.com/2019/06/05/tpl-dataflow-in-net-core-in-depth-part-2/
  
@@ -59,8 +63,16 @@ to refresh knowledge, read
 
 SLIDE NOTES
     * TPL Dataflow
-        * dataflow - https://en.wikipedia.org/wiki/Dataflow
+        * dataflow - https://en.wikipedia.org/wiki/Dataflow (also stream processing, reactive programming)
+        * simplify work with Tasks and running them concurrently and in parallel
         * example - IoT processing, processing GPS position messages
+            batch-processing pipelines
+            parallel stream processing
+            data buffering, or joining and
+            processing in batch data from one or more sources.
+                from https://www.dotnetcurry.com/patterns-practices/1483/parallel-workflow-dotnet-tpl-dataflow
+        * https://blog.stephencleary.com/2012/10/introduction-to-dataflow-part-3.html
+            " its normal use case is to set up a mesh of a few nodes - say, 3-4 nodes - and then run a huge amount of data through it. I've only seen meshes get up to about a dozen in the most complex cases."
     * TPL Dataflow (advantages)
         * explicit control over how data is buffered and moves around the system
         * increase robustness of concurrency-enabled applications
@@ -72,17 +84,20 @@ SLIDE NOTES
             ' https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/dataflow-task-parallel-library
 
         * alternatives for some tasks - Parallel.ForEach, Rx.NET for some reactive apps, Concurrect Collections
+    * Dataflow pipeline
+        * processing example - sensor readings from IoT, from byte[] to domain object and back
     * Dataflow blocks
-        * TODO talk about info from https://blog.stephencleary.com/2012/09/introduction-to-dataflow-part-1.html
+        * talk about info from https://blog.stephencleary.com/2012/09/introduction-to-dataflow-part-1.html
     * Linking Blocks
         * explain how the buffers are filled, when input buffer, when output buffer
+         * You can have the link disengage after so many data items, or specify a filter so only certain data items will be propagated along the link, etc.
     * DEMO simple pipeline
         * show what we're going to do and explain how to setup everything - TransformBlock, ActionBlock, link
         * show how to .Post/.SendAsync data and what are the possible results
         * show - how it runs sequentially in context of one block
         * show - how it can run in parallel in context of one block
     * Block Completion
-        * what if we want to finish the pipeline and get the results? 
+        * what if we want to finish the pipeline and get the results all at once? 
         * pipeline can finish after all input data is processed
         * `Complete` method - blocks should not expect any more messages
         * allows a block to finish processing messages        
