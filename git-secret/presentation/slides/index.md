@@ -12,36 +12,50 @@
 
 ***
 
-## TODO Issues with secrets
+## Issues with secrets
 
-DESCRIBE the drawbacks of storing secrets separately
-
-
-
-    These files are not version controlled. Filenames, locations, and passwords change from time to time, or new information appears, and other information is removed. When secrets are stored separately from your repo, you can not tell for sure which version of the configuration file was used with each commit or deploy.
-
-    When building the automated deployment system there will be one extra step: download and place these secret-configuration files where they need to be. This also means you have to maintain extra secure servers where all your secrets are stored.
-
+- Cannot be stored in git repo because of their confidential nature
+- separate storage may be out of sync, hard to identify related version
+- extra step for CD pipeline - get secrets from "somewhere"
+- often stored in wiki, outdated
 
 ***  
 
-## TODO Solution - Git Secret
+## Solution - Git Secret
 
-DESCRIBE what git secret does
+- encrypt and store files inside git repository
+- safely share secrets between devs
+- decrypt during automated deployment
 
+' secrets available for correct version
+' secrets are versioned control
 
-    git-secret encrypts files and stores them inside your git repository, providing a history of changes for every commit.
-    git-secret doesn’t require any extra deploy operations other than providing the appropriate private key (to allow decryption), and using git secret reveal to decrypt all the secret files.
+***
 
+## Asymmetic Cryptography
+
+![](images/asymmetric-encryption.png)
 
 ***
 
-## TODO Asymmetic Cryptography
+## Asymmetic Cryptography II
 
-JUST IMAGE, do not go into details
+Why for Git secret?
+
+' Allows us to better manage who has access, beats having one shared key
 
 ***
-## Install (Debian systems) I
+
+## GPG
+
+- GnuPG, open source implementation of [PGP](https://en.wikipedia.org/wiki/Pretty_Good_Privacy)
+- Encrypt, Decrypt, Sign and Verify documents
+- Manage public and private keys
+
+' https://www.devdungeon.com/content/gpg-tutorial
+
+***
+### Install (Debian systems) I
 
 Install the prerequisities
 
@@ -58,12 +72,11 @@ sudo apt install git-secret
 https://web.archive.org/web/20220703064608/https://git-secret.io/installation
 
 ' at the moment, original domain git-secret.io is not working due to sanctions
-
-just for sharing the scripts, do not go through the setup here
+' FYI only, I will share the talk on github. We will not go through that now
 
 ***
 
-## Install (Debian systems) II
+### Install (Debian systems) II
 
 ```bash
 sudo sh -c "echo 'deb https://gitsecret.jfrog.io/artifactory/git-secret-deb git-secret main' >> /etc/apt/sources.list"
@@ -75,13 +88,7 @@ git secret --version
 
 ***
 
-## GPG
-
-DESCRIBE what it is
-
-***
-
-## GPG generating keys
+### GPG generating keys
 
 ```bash
 gpg --gen-key
@@ -91,33 +98,73 @@ gpg --gen-key
 gpg --armor --export your.email@address.com > public-key.gpg
 ```
 
+' send to whoever manages the keys
+
 ***
+
+### GPG import key
 
 ```bash
 gpg --import public-key.gpg
 ```
 
-
 ***
 
 ## Git secret Usage
 
-initialize
-
-tell
-
-add 
-
-hide
-
-reveal
-
-***
-
-## Example
 
 > Sharing files with git secret
 
+' immediately show example
+
+***
+## TODO Git secret Usage
+
+![](images/git-secret-overview.png)
+
+***
+
+### Init Git Secret
+
+```bash
+git secret init
+```
+
+```bash
+git secret tell karel@example.org
+```
+***
+
+### Encrypt files
+
+```bash
+git secret add secrets.txt
+```
+
+```bash
+git secret hide
+```
+
+***
+
+### Access to other users
+
+```bash
+git secret tell petr@example.org
+```
+
+```bash
+git secret hide
+```
+***
+
+### Decrypt files
+
+```bash
+git secret reveal
+```
+
+' should be root directory of git repo
 
 ***
 
@@ -127,7 +174,7 @@ reveal
 - simple usage
 - can be used as part of CI/CD pipeline
 
-'not demonstrated, we are not using this
+' not demonstrated, we are not using this
 
 ***
 
