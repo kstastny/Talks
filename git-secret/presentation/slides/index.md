@@ -6,31 +6,61 @@
 
 ***
 
+ <img src="./images/swords.png" width="472" height="600" /> 
+
+' ![](images/swords.png)
+
+
+***
+
 # Git Secret
 
 ## Karel Šťastný
 
 ***
 
-## Issues with secrets
+## Secrets
 
-- Cannot be stored in git repo because of their confidential nature
-- separate storage may be out of sync, hard to identify related version
-- extra step for CD pipeline - get secrets from "somewhere"
-- often stored in wiki, outdated
+- database connection strings
+- Azure, AWS accesses
+- 3rd party API credentials
+- ...
 
-***  
 
-## Solution - Git Secret
-
-- encrypt and store files inside git repository
-- safely share secrets between devs
-- decrypt during automated deployment
-
-' secrets available for correct version
-' secrets are versioned control
+- necessary to run the application
 
 ***
+
+## Sharing Secrets
+### Common Solutions
+
+- directly in git repo
+- project wiki, Confluence etc.
+- separate repo with restricted access
+- password managers (1Password, BitWarden, LastPass)
+- nowhere - send by email, SMS, slack, carrier-pigeon
+
+***
+
+### Complications
+
+- sharing securely
+- sync with correct version of source code
+- Continuous Deployment setup
+
+***
+
+### Other Solutions
+
+- encrypt secrets in repo
+    - symmetric encryption
+    - asymmetric encryption
+
+' symmetric - easy, just share a key and anyone who has the key has access
+' disadvantage - removal of trust, security of key
+' Asymmetric - allows us to better manage who has access, beats having one shared key
+
+***  
 
 ## Asymmetic Cryptography
 
@@ -38,15 +68,19 @@
 
 ***
 
-## Asymmetic Cryptography II
 
-Why for Git secret?
+## Git Secret
 
-' Allows us to better manage who has access, beats having one shared key
+- bunch of scripts to simplify asymmetric encryption of secrets
+- encrypt and store files inside git repository
+- safely share secrets between devs
+- decrypt during automated deployment
+
+' secrets are versioned controled
 
 ***
 
-## GPG
+### GPG
 
 - GnuPG, open source implementation of [PGP](https://en.wikipedia.org/wiki/Pretty_Good_Privacy)
 - Encrypt, Decrypt, Sign and Verify documents
@@ -55,18 +89,47 @@ Why for Git secret?
 ' https://www.devdungeon.com/content/gpg-tutorial
 
 ***
-### Install (Debian systems) I
 
-Install the prerequisities
+' ### PGP Encryption
+
+<img src="./images/PGP_diagram.svg.png" width="737" height="768" style="position: relative;top:-100px;" /> 
+
+' ![](images/PGP_diagram.svg.png)
+
+
+***
+
+### Git Secret Overview
+
+![](images/git-secret-overview.png)
+
+
+***
+
+
+### Git secret
+
+> Sharing files with git secret
+
+' immediately show example
+
+***
+
+### Preparation
+
+#### Install (Debian systems) I
+
 
 ```bash
 sudo apt install gnupg make man git gawk
 ```
 
-Install git-secret
-
 ```bash
 sudo apt install git-secret
+```
+
+```bash
+git secret --version
 ```
 
 https://web.archive.org/web/20220703064608/https://git-secret.io/installation
@@ -74,25 +137,27 @@ https://web.archive.org/web/20220703064608/https://git-secret.io/installation
 ' at the moment, original domain git-secret.io is not working due to sanctions
 ' FYI only, I will share the talk on github. We will not go through that now
 
+
+' #### Install (Debian systems) II
+
+' ```bash
+' sudo sh -c "echo 'deb https://gitsecret.jfrog.io/artifactory/git-secret-deb git-secret main' >> /etc/apt/sources.list"
+' wget -qO - 'https://gitsecret.jfrog.io/artifactory/api/gpg/key/public' | sudo apt-key add -
+' sudo apt-get update && sudo apt-get install -y git-secret
+
+' git secret --version
+' ```
+
 ***
 
-### Install (Debian systems) II
-
-```bash
-sudo sh -c "echo 'deb https://gitsecret.jfrog.io/artifactory/git-secret-deb git-secret main' >> /etc/apt/sources.list"
-wget -qO - 'https://gitsecret.jfrog.io/artifactory/api/gpg/key/public' | sudo apt-key add -
-sudo apt-get update && sudo apt-get install -y git-secret
-
-git secret --version
-```
-
-***
-
-### GPG generating keys
+#### GPG generate
 
 ```bash
 gpg --gen-key
 ```
+*** 
+
+#### GPG export key
 
 ```bash
 gpg --armor --export your.email@address.com > public-key.gpg
@@ -102,7 +167,7 @@ gpg --armor --export your.email@address.com > public-key.gpg
 
 ***
 
-### GPG import key
+#### GPG import key
 
 ```bash
 gpg --import public-key.gpg
@@ -110,21 +175,7 @@ gpg --import public-key.gpg
 
 ***
 
-## Git secret Usage
-
-
-> Sharing files with git secret
-
-' immediately show example
-
-***
-## TODO Git secret Usage
-
-![](images/git-secret-overview.png)
-
-***
-
-### Init Git Secret
+#### Init Git Secret
 
 ```bash
 git secret init
@@ -135,7 +186,7 @@ git secret tell karel@example.org
 ```
 ***
 
-### Encrypt files
+#### Encrypt files
 
 ```bash
 git secret add secrets.txt
@@ -147,7 +198,7 @@ git secret hide
 
 ***
 
-### Access to other users
+#### Access to other users
 
 ```bash
 git secret tell petr@example.org
@@ -158,7 +209,7 @@ git secret hide
 ```
 ***
 
-### Decrypt files
+#### Decrypt files
 
 ```bash
 git secret reveal
@@ -181,15 +232,18 @@ git secret reveal
 ## The Bad
 
 - no direct Windows support for those to whom this matters
+    - some people may have problems setting up
 - reveal needs to run from root .git directory, sometimes confusing
-
 
 ***
 
 ## The Ugly
 
 - error messages not very helpful
-- secrets cannot be merged - developers need to be careful not to overwrite
+- secrets cannot be merged - conflicts in binary files
+- developers need to be careful not to overwrite each others stuff 
+
+' overwrite - cannot be caught by code review
 
 ***
 
@@ -200,46 +254,3 @@ Slides at https://github.com/kstastny/Talks
 * https://sobolevn.me/git-secret/
 * https://github.com/sobolevn/git-secret
 * https://gnupg.org/index.html
-
-
-
-
-
-*********** REMOVE STUFF BELOW
-## John H. Conway
-
-![](images/20090310_ConwayKochen_DJA_066-copy.jpg)
-
-<p class="reference">Photo by
-Denise Applewhite, Office of Communications, Princeton.edu</p>  
-
-' https://www.princeton.edu/news/2020/04/14/mathematician-john-horton-conway-magical-genius-known-inventing-game-life-dies-age
-
-***
-
-## Game of Life
-
-![](images/Gospers_glider_gun.gif)
-
-<p class="reference"><a href="https://commons.wikimedia.org/wiki/File:Gospers_glider_gun.gif">https://commons.wikimedia.org/wiki/File:Gospers_glider_gun.gif</a></p>  
-
-***
-
-## Rules
-
- 1. Any live cell with two or three live neighbours survives.
- 1. Any dead cell with three live neighbours becomes a live cell.
- 1. All other live cells die in the next generation. Similarly, all other dead cells stay dead.
-
-***
-
-## Implementation
-
-***  
-
-## Sources
-
-* You can find this talk on my github https://github.com/kstastny/Talks
-* https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
-* [John Conway on Game of Life](https://www.youtube.com/watch?v=R9Plq-D1gEk)
-* https://fable.io/docs/
