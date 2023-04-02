@@ -17,6 +17,8 @@
 
 ## Karel Šťastný
 
+' I am not security expert and know nothing about security, just want to show you a tool that was useful for us :)
+
 ***
 
 ## Secrets
@@ -62,7 +64,7 @@
 
 ***  
 
-## Asymmetic Cryptography
+## Asymmetric Cryptography
 
 ![](images/asymmetric-encryption.png)
 
@@ -77,6 +79,12 @@
 - decrypt during automated deployment
 
 ' secrets are versioned controled
+
+***
+
+### Git Secret Overview
+
+![](images/git-secret-overview.png)
 
 ***
 
@@ -97,11 +105,6 @@
 ' ![](images/PGP_diagram.svg.png)
 
 
-***
-
-### Git Secret Overview
-
-![](images/git-secret-overview.png)
 
 
 ***
@@ -234,16 +237,20 @@ git secret reveal
 - no direct Windows support for those to whom this matters
     - some people may have problems setting up
 - reveal needs to run from root .git directory, sometimes confusing
+- error messages not very helpful
 
 ***
 
 ## The Ugly
 
-- error messages not very helpful
 - secrets cannot be merged - conflicts in binary files
 - developers need to be careful not to overwrite each others stuff 
+- more than one key associated with an email address causes problems - gpg keyring should only contain one
+- anyone can add themselves to pubring, you need to be careful when hiding/merging to repo
 
 ' overwrite - cannot be caught by code review
+' in general - careful when you see changes in pubring
+' https://github.com/sobolevn/git-secret/issues/494
 
 ***
 
@@ -254,3 +261,4 @@ Slides at https://github.com/kstastny/Talks
 * https://sobolevn.me/git-secret/
 * https://github.com/sobolevn/git-secret
 * https://gnupg.org/index.html
+* https://en.wikipedia.org/wiki/Pretty_Good_Privacy
