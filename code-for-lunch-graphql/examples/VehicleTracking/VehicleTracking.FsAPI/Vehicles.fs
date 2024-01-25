@@ -4,6 +4,7 @@ open System
 open System.Collections.Generic
 open System.Collections.ObjectModel
 
+open System.ComponentModel.DataAnnotations
 open System.Threading
 open System.Threading.Tasks
 open HotChocolate
@@ -19,7 +20,15 @@ open VehicleTracking.FsAPI.RootObjects
 
 module InputTypes =
     
-    ()
+    type VehicleInput() =
+        
+        [<Required>]
+        member val Id = Guid.Empty with get, set
+        
+        
+        [<Required>]
+        [<GraphQLDescription("Label for easier identification of vehicle")>]
+        member val Label = "" with get, set
     
     
     
@@ -134,3 +143,23 @@ module Queries =
                 
             }
         
+
+
+module Mutations =
+    
+    open InputTypes
+    open OutputTypes
+    
+    [<ExtendObjectType(nameof RootMutation)>]
+    type VehiclesMutation() =
+        
+        
+        member x.UpdateLabel(
+            [<Service>] storage: Storage,
+            vehicleInput: VehicleInput,
+            cancellationToken: CancellationToken) : Task<VehicleOutput> =
+            task {
+                let! updatedVehicle = storage.UpdateVehicleLabel(vehicleInput.Id, vehicleInput.Label, cancellationToken)
+                
+                return updatedVehicle |> VehicleOutput.ofVehicle
+            }

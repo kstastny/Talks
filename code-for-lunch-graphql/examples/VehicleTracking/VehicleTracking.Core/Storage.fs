@@ -1,6 +1,7 @@
 ﻿module VehicleTracking.Core.Storage
 
 open System
+open System.Collections.Concurrent
 open System.Threading
 open Microsoft.Extensions.Logging
 open VehicleTracking.Core.Domain
@@ -17,8 +18,8 @@ module private MockData =
         
     let drivers =
         [
-            driver "Roman" "Provazník"
-            driver "Karel" "Šťastný"
+            driver "Radoslav" "Vavroch"
+            driver "Vlastimil" "Vypich"
             driver "Petr" "Pavel"
             driver "Pavel" "Petr"
             driver "Josef" "Nowak"
@@ -31,6 +32,7 @@ module private MockData =
         ]
         
     let rand = Random()
+    
     let getRandomDriver =
         let driverArray = drivers |> Array.ofList
         
@@ -99,6 +101,14 @@ module private MockData =
         
 type Storage(logger: ILogger<Storage>) =
     
+    let vehicles =
+        let vehiclesDict = ConcurrentDictionary<Guid, Vehicle>()
+    
+        MockData.vehicles
+        |> List.iter (fun x -> vehiclesDict.TryAdd(x.Id, x) |> ignore)
+        
+        vehiclesDict
+    
     
     member x.GetDrivers (_: CancellationToken) =
         task {
@@ -106,14 +116,15 @@ type Storage(logger: ILogger<Storage>) =
             return MockData.drivers
         }
         
-    member x.GetDriverVehicleIds (driverId: Guid, cancellationToken: CancellationToken) =
+    member x.GetDriverVehicleIds (driverId: Guid, _: CancellationToken) =
         task {
             logger.LogInformation("Calling Storage.GetDriverVehicles")
             
             return
-                MockData.vehicles
-                |> List.where (fun x -> x.RootDriver |> Option.map _.Id = Some driverId)
-                |> List.map _.Id
+                vehicles.Values
+                |> Seq.where (fun x -> x.RootDriver |> Option.map _.Id = Some driverId)
+                |> Seq.map _.Id
+                |> List.ofSeq
         }        
     
     member x.GetDriverById (driverId: Guid, _: CancellationToken) =
@@ -125,5 +136,20 @@ type Storage(logger: ILogger<Storage>) =
 
     member x.GetVehicles (_: CancellationToken) = task {
         logger.LogInformation("Calling Storage.GetVehicles")
-        return MockData.vehicles
+        return vehicles.Values |> List.ofSeq
+    }
+    
+    
+    member x.UpdateVehicleLabel(vehicleId: Guid, label: string, _: CancellationToken) = task {
+        let vehicle = vehicles[vehicleId]
+        let updatedVehicle = { vehicle with Label = label }
+        
+        vehicles.AddOrUpdate(
+            vehicleId,
+            updatedVehicle,
+            (fun k v -> updatedVehicle)
+            )
+        |> ignore
+        
+        return vehicle
     }

@@ -1,21 +1,27 @@
 ﻿open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.DependencyInjection
-open VehicleTracking.Core
+
 open VehicleTracking.Core.Storage
 open VehicleTracking.FsAPI.Positions
 open VehicleTracking.FsAPI.RootObjects
+open VehicleTracking.FsAPI.Vehicles.Mutations
 open VehicleTracking.FsAPI.Vehicles.Queries
 
 
 let builder = WebApplication.CreateBuilder()
 
-builder.Services.AddScoped<Storage>() |> ignore
+// keep everything in memory
+builder.Services.AddSingleton<Storage>() |> ignore
 
 builder.Services
     .AddGraphQLServer()
     .AddInMemorySubscriptions()
+    //queries
     .AddQueryType<RootQuery>()
-    .AddType<VehiclesQuery>()
+    .AddTypeExtension<VehiclesQuery>()
+    
+    .AddMutationType<RootMutation>()
+    .AddTypeExtension<VehiclesMutation>()
     //add subscriptions    
     .AddSubscriptionType<RootSubscription>()
     .AddTypeExtension<PositionSubscription>()
