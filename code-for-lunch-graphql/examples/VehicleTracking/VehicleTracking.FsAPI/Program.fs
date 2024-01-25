@@ -1,10 +1,14 @@
 ﻿open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.DependencyInjection
+open VehicleTracking.Core
+open VehicleTracking.Core.Storage
 open VehicleTracking.FsAPI.Queries
 open VehicleTracking.FsAPI.Vehicles.Queries
 
 
-let builder = WebApplication.CreateBuilder();
+let builder = WebApplication.CreateBuilder()
+
+builder.Services.AddScoped<Storage>() |> ignore
 
 builder.Services
     .AddGraphQLServer()

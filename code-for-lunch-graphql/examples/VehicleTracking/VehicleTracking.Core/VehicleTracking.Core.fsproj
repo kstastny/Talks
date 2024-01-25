@@ -12,6 +12,7 @@
 
     <ItemGroup>
       <PackageReference Include="FsToolkit.ErrorHandling" Version="4.15.1" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
     </ItemGroup>
 
 </Project>

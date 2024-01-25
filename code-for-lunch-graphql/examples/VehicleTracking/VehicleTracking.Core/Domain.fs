@@ -4,7 +4,7 @@ open System
 
 
 
-type Person = {
+type Driver = {
     Id: Guid
     Name: string
     Surname: string
@@ -15,5 +15,5 @@ type Vehicle = {
     Id: Guid
     RegistrationPlate: string
     Label: string
-    RootDriver: Person option
+    RootDriver: Driver option
 }

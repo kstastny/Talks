@@ -2,11 +2,12 @@
 
 open System
 open System.Threading
+open Microsoft.Extensions.Logging
 open VehicleTracking.Core.Domain
 
 module private MockData =
     
-    let person name surname =
+    let driver name surname =
         {
             Id = Guid.NewGuid()
             Name = name
@@ -16,17 +17,17 @@ module private MockData =
         
     let drivers =
         [
-            person "Roman" "Provazník"
-            person "Karel" "Šťastný"
-            person "Petr" "Pavel"
-            person "Pavel" "Petr"
-            person "Josef" "Nowak"
-            person "Lev" "Prchala"
-            person "Alexandra" "Ukrutná"
-            person "Viktorie" "Vítězná"
-            person "Anastázie" "Vavrochová"
-            person "Marie" "Radhouzká"
-            person "Vlasta" "Machová"
+            driver "Roman" "Provazník"
+            driver "Karel" "Šťastný"
+            driver "Petr" "Pavel"
+            driver "Pavel" "Petr"
+            driver "Josef" "Nowak"
+            driver "Lev" "Prchala"
+            driver "Alexandra" "Ukrutná"
+            driver "Viktorie" "Vítězná"
+            driver "Anastázie" "Vavrochová"
+            driver "Marie" "Radhouzká"
+            driver "Vlasta" "Machová"
         ]
         
     let rand = Random()
@@ -95,8 +96,34 @@ module private MockData =
             )
         
         
-let getDrivers (_: CancellationToken) = task { return MockData.drivers }
+        
+type Storage(logger: ILogger<Storage>) =
     
     
-   
-let getVehicles (_: CancellationToken) = task { return MockData.vehicles }
+    member x.GetDrivers (_: CancellationToken) =
+        task {
+            logger.LogInformation("Calling Storage.GetDrivers")
+            return MockData.drivers
+        }
+        
+    member x.GetDriverVehicleIds (driverId: Guid, cancellationToken: CancellationToken) =
+        task {
+            logger.LogInformation("Calling Storage.GetDriverVehicles")
+            
+            return
+                MockData.vehicles
+                |> List.where (fun x -> x.RootDriver |> Option.map _.Id = Some driverId)
+                |> List.map _.Id
+        }        
+    
+    member x.GetDriverById (driverId: Guid, _: CancellationToken) =
+        task {
+            logger.LogInformation("Calling Storage.GetDriverById")
+            return MockData.drivers |> List.find (fun x -> x.Id = driverId)
+        }
+    
+
+    member x.GetVehicles (_: CancellationToken) = task {
+        logger.LogInformation("Calling Storage.GetVehicles")
+        return MockData.vehicles
+    }

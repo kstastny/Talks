@@ -77,7 +77,7 @@ TODO sample from my app - Vehicles
 
 ###
 
-TODO alternatives for defining schema (Code first vs schema first)
+TODO alternatives for defining schema (Code first vs schema first vs Annotations)
 
 ***
 
@@ -92,6 +92,15 @@ TODO alternatives for defining schema (Code first vs schema first)
 ### Examples in .NET
 
 TODO query, mutation, subscription
+
+***
+
+TODO dataloaders - solve the issue of multiple loads
+  - show on drivers, two approaches
+
+***
+
+TODO maaaabe skip mutations to save time and show subscriptions, that is more interesting. Only have a sample mutation for changing vehicle label
 
 
 ***
