@@ -3,10 +3,7 @@
 open System
 open System.Collections.Generic
 open System.Collections.ObjectModel
-open System.ComponentModel.DataAnnotations
 
-open System.IO
-open System.Runtime.CompilerServices
 open System.Threading
 open System.Threading.Tasks
 open HotChocolate
@@ -17,7 +14,7 @@ open VehicleTracking.Core.Domain
 open VehicleTracking.Core.Storage
 
 open VehicleTracking.FsAPI.DataLoaders
-open VehicleTracking.FsAPI.Queries
+open VehicleTracking.FsAPI.RootObjects
 
 
 module InputTypes =

@@ -6,13 +6,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Queries.fs" />
         <Compile Include="DataLoaders.fs" />
+        <Compile Include="RootObjects.fs" />
         <Compile Include="Vehicles.fs" />
+        <Compile Include="Positions.fs" />
         <Compile Include="Program.fs"/>
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="FSharp.Control.TaskSeq" Version="0.3.0" />
       <PackageReference Include="FsToolkit.ErrorHandling" Version="4.15.1" />
       <PackageReference Include="HotChocolate" Version="13.8.1" />
       <PackageReference Include="HotChocolate.AspNetCore" Version="13.8.1" />
