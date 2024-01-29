@@ -8,8 +8,8 @@
     <ItemGroup>
         <Compile Include="DataLoaders.fs" />
         <Compile Include="RootObjects.fs" />
-        <Compile Include="Vehicles.fs" />
         <Compile Include="Positions.fs" />
+        <Compile Include="Vehicles.fs" />
         <Compile Include="Program.fs"/>
     </ItemGroup>
 

@@ -20,6 +20,21 @@ type VehiclePosition() =
     member val VehicleId : Guid = Guid.Empty with get, set 
 
 
+let random = Random()
+let nextPosition =
+    
+    let minLat = 44.8948358
+    let maxLat = 52.5841061
+    let minLon = 4.9568123
+    let maxLon = 28.1767924
+    
+    fun vehicleId ->
+        VehiclePosition(
+            VehicleId = vehicleId,
+            Latitude = random.NextDouble()*(maxLat - minLat) + minLat,
+            Longitude = random.NextDouble()*(maxLon - minLon) + minLon
+            )
+
 
 [<ExtendObjectType(nameof RootSubscription)>]
 type PositionSubscription(
@@ -27,21 +42,6 @@ type PositionSubscription(
     [<Service>] topicEventSender: ITopicEventSender
     ) =
     
-    let random = Random()
-    let nextPosition =
-        
-        let minLat = 44.8948358
-        let maxLat = 52.5841061
-        let minLon = 4.9568123
-        let maxLon = 28.1767924
-        
-        fun vehicleId ->
-            VehiclePosition(
-                VehicleId = vehicleId,
-                Latitude = random.NextDouble()*(maxLat - minLat) + minLat,
-                Longitude = random.NextDouble()*(maxLon - minLon) + minLon
-                )
-        
     
     let topicName = "vehiclePositions"
 

@@ -74,6 +74,16 @@ module OutputTypes =
                     return Unchecked.defaultof<_>
             }
             
+        member x.GetPosition(
+            [<Parent>] parent: VehicleOutput,
+            cancellationToken: CancellationToken
+            ) =
+            task {
+                //simulate delay - asking for position the tracker in vehicle
+                do! Task.Delay 1000
+                return Positions.nextPosition parent.Id
+            }
+            
         static member ofVehicle(vehicle: Vehicle) =
             VehicleOutput(
                        Id = vehicle.Id,

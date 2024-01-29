@@ -35,6 +35,10 @@ p.reference {
     font-size: 45%;
 }
 
+ul.too-much-text {
+    font-size: 60%;
+}
+
 .reveal strong {
 	color: #e7ad52; 
 	/* color: #a23; */
