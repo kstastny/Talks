@@ -19,6 +19,7 @@ builder.Services
     //queries
     .AddQueryType<RootQuery>()
     .AddTypeExtension<VehiclesQuery>()
+    .AddTypeExtension<DriversQuery>()
     
     .AddMutationType<RootMutation>()
     .AddTypeExtension<VehiclesMutation>()

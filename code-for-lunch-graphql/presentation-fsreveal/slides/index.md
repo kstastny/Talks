@@ -43,7 +43,7 @@
 - GraphQL
     - Schemas
     - Modes of API Communication 
-- Examples
+- Examples (HotChocolate)
 
 ***
 
@@ -52,13 +52,13 @@
 - Query Language for API
 - Strongly typed
 
-' TODO mention advantages - predictable, FE asks for exactly what it wants, BE only loads needed data and does not need to return hard to reach things. flexibility
+' history, why it was created - ask for what you need
 
 ***
 
 ## GraphQL Service
 
-- Schema
+- Schema (SDL)
     - Types
     - Operations on said types
 - Endpoints implementing said Schema    
@@ -71,22 +71,33 @@
 schema {
   query: RootQuery
   mutation: RootMutation
-  subscription: RootSubscription
+}
+
+type VehicleOutput {
+  rootDriver: DriverOutput
+  id: UUID!
+  registrationPlate: String
+  label: String
+  rootDriverId: UUID
 }
 
 type RootQuery {
   vehicles: [VehicleOutput!]!
 }
 
-type VehicleOutput {
-  rootDriverNaive: DriverOutput
-  rootDriverDataLoader: DriverOutput
-  id: UUID!
-  registrationPlate: String
-  label: String
-  rootDriverId: UUID
+type RootMutation {
+  updateLabel(vehicleInput: VehicleInput): VehicleOutput
 }
+
 ```
+
+***
+
+## How to talk with API
+
+- Query
+- Mutation
+- Subscription
 
 ***
 
@@ -101,17 +112,11 @@ type VehicleOutput {
 
 ***
 
-## How to talk with API
-
-- Query
-- Mutation
-- Subscription
-
-***
-
 ## Examples in HotChocolate
 
 <img src="./images/vehicle-tracking.png" />
+
+' show how it works from outside - real schema of our app, how to test and do a simple call
 
 ***
 
@@ -119,9 +124,10 @@ type VehicleOutput {
 
 <img src="./images/query2.png"width="540" height="540" />
 
-' how to query data
-' DataLoaders
-' DataLoaders- show on drivers, two approaches
+' how to query data, how to go deeper - first just list of vehicles, compare with and without position. Then drivers and multiload problem
+' advantages - predictable, FE asks for exactly what it wants, BE only loads needed data and does not need to return hard to reach things. flexibility
+' DataLoaders - show on drivers, two approaches to get data
+' sample - how how to return driver? imo there won't be time for that
 
 ***
 
@@ -129,7 +135,7 @@ type VehicleOutput {
 
 <img src="./images/mutation2.png"width="540" height="540" />
 
-' likely skip, just mention what it is and that the samples are there
+' skip, just mention what it is and that the samples are there
 
 ***
 
@@ -137,27 +143,57 @@ type VehicleOutput {
 
 <img src="./images/subscription2.png"width="540" height="540" />
 
-' TODO different approaches to subscription definition
-
 ***
 
 ## Advanced topics
 
-- Authentication
-- Middleware
 - Distributed Schemas
+- Middleware
 
-' - Error Handling //TODO this may be actually presented in the samples? if theres time
-' TODO study and prepare what to say
+
+' GQL pipeline constructed of many middlewares
 
 ***
+
+### Distributed Schemas
+
+* Schema Stitching
+* Schema Federation
+
+' stitching - merge multiple schemas into one 
+' federation - combine multiple GQL services into one. More modular and maintainable, suitable for microservices architecture
+
+***
+
+### Middleware
+
+```
+builder
+    .UseRequest<RequestLoggingMiddleware>()
+    .UseRequest<ValidationErrorReportingMiddleware>()
+    .UseInstrumentations()
+    .UseExceptions()
+    .UseTimeout()
+    .UseDocumentCache()
+    .UseDocumentParser()
+    .UseDocumentValidation()
+    .UseOperationCache()
+    .UseOperationComplexityAnalyzer()
+    .UseOperationResolver()
+    .UseOperationVariableCoercion()
+    .UseOperationExecution()
+```
+
+***
+
 
 ### The Good
 
 <img src="./images/The-Good.png"width="540" height="540" />
 
 ' The Good
-' GQL Implicit validation, strong types, certainty about what do you get, Schema
+' GQL Implicit validation, strong types, certainty about what do you get, Schema, efficiency
+' efficient for BE and FE
 
 ***
 
@@ -166,7 +202,8 @@ type VehicleOutput {
 <img src="./images/The-Bad.png"width="540" height="540" />
 
 ' The Bad
-' slightly harder than REST (i.e. needs libraries), TODO others for HotChocolate
+' slightly harder than REST (i.e. needs libraries)
+' almost one man show
 
 ***
 
@@ -176,13 +213,19 @@ type VehicleOutput {
 
 ' The Ugly 
 
-' sometimes naming, breaking changes, more or less one man show?, TODO for HotChocolate
+' documentation is mostly videos
+' breaking changes - authentication endpoint
+' sometimes naming clashes with C#
+
+***
+
+## Q&A
 
 ***
 
 ## Sources
 
-Slides at https://github.com/kstastny/Talks
+Slides at https://github.com/kstastny/Talks/tree/master/code-for-lunch-graphql/code-for-lunch-graphql
 
 * https://graphql.org/learn/
 * https://chillicream.com/docs/hotchocolate/

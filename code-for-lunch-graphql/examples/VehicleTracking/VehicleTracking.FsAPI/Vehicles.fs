@@ -44,9 +44,23 @@ module OutputTypes =
     
         [<GraphQLDescription("Label for easier identification of vehicle")>]
         member val Label = "" with get, set
+            
+            
+        member x.GetPosition(
+            [<Parent>] parent: VehicleOutput,
+            _: CancellationToken
+            ) =
+            task {
+                //simulate delay - asking for position the tracker in vehicle
+                do! Task.Delay 1000
+                return Positions.nextPosition parent.Id
+            }
         
+        
+        [<GraphQLIgnore>]
         member val RootDriverId : Nullable<Guid> = Unchecked.defaultof<_> with get, set
         
+            
         member x.GetRootDriverNaive(
             [<Service>] storage: Storage,
             [<Parent>] parent: VehicleOutput,
@@ -72,16 +86,6 @@ module OutputTypes =
                     return driver |> Option.map DriverOutput.ofDriver |> Option.defaultValue Unchecked.defaultof<_>
                 else
                     return Unchecked.defaultof<_>
-            }
-            
-        member x.GetPosition(
-            [<Parent>] parent: VehicleOutput,
-            cancellationToken: CancellationToken
-            ) =
-            task {
-                //simulate delay - asking for position the tracker in vehicle
-                do! Task.Delay 1000
-                return Positions.nextPosition parent.Id
             }
             
         static member ofVehicle(vehicle: Vehicle) =
@@ -133,9 +137,9 @@ module OutputTypes =
             
     
     
+open OutputTypes
+
 module Queries =
-    
-    open OutputTypes
     
     [<ExtendObjectType(nameof RootQuery)>]
     type VehiclesQuery() =
@@ -153,6 +157,21 @@ module Queries =
                 
             }
         
+    [<ExtendObjectType(nameof RootQuery)>]
+    type DriversQuery() =
+        
+        
+        [<GraphQLNonNullType(false, false)>]
+        member x.GetDrivers(
+            [<Service>] storage: Storage,
+            cancellationToken: CancellationToken) : Task<DriverOutput list> =
+            task {
+                let! drivers = storage.GetDrivers cancellationToken
+                
+                return drivers
+                       |> List.map DriverOutput.ofDriver
+                
+            }        
 
 
 module Mutations =
