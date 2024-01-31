@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "VehicleTracking.FsAPI", "VehicleTracking.FsAPI\VehicleTracking.FsAPI.fsproj", "{C402F11C-3E96-485A-AAF7-08F089932DBE}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "VehicleTracking.Core", "VehicleTracking.Core\VehicleTracking.Core.fsproj", "{7C73A56C-37A1-4440-9392-4F764B25CD77}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C402F11C-3E96-485A-AAF7-08F089932DBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C402F11C-3E96-485A-AAF7-08F089932DBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C402F11C-3E96-485A-AAF7-08F089932DBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C402F11C-3E96-485A-AAF7-08F089932DBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C73A56C-37A1-4440-9392-4F764B25CD77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C73A56C-37A1-4440-9392-4F764B25CD77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C73A56C-37A1-4440-9392-4F764B25CD77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C73A56C-37A1-4440-9392-4F764B25CD77}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
