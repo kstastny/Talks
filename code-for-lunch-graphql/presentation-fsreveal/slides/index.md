@@ -191,7 +191,7 @@ builder
 
 <img src="./images/The-Good.png"width="540" height="540" />
 
-' The Good
+' HotChocolate - testing UI
 ' GQL Implicit validation, strong types, certainty about what do you get, Schema, efficiency
 ' efficient for BE and FE
 
@@ -201,7 +201,7 @@ builder
 
 <img src="./images/The-Bad.png"width="540" height="540" />
 
-' The Bad
+
 ' slightly harder than REST (i.e. needs libraries)
 ' almost one man show
 
@@ -210,8 +210,6 @@ builder
 ### The Ugly
 
 <img src="./images/The-Ugly2.png" width="540" height="540" />
-
-' The Ugly 
 
 ' documentation is mostly videos
 ' breaking changes - authentication endpoint
