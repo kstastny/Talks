@@ -4,10 +4,11 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="FSharp.Core" Version="8.0.101" />
       <PackageReference Include="HotChocolate" Version="13.8.1" />
       <PackageReference Include="HotChocolate.AspNetCore" Version="13.8.1" />
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
@@ -15,11 +16,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\VehicleTracking.Core\VehicleTracking.Core.fsproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Positions\" />
-      <Folder Include="Vehicles\" />
     </ItemGroup>
 
 </Project>

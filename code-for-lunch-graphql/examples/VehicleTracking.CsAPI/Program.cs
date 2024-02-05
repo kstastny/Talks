@@ -2,7 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using VehicleTracking.Core;
 using VehicleTracking.CsAPI.Drivers;
+using VehicleTracking.CsAPI.Positions;
 using VehicleTracking.CsAPI.RootObjects;
+using VehicleTracking.CsAPI.Vehicles;
 
 
 var builder = WebApplication.CreateBuilder();
@@ -15,15 +17,15 @@ builder.Services
         .AddInMemorySubscriptions()
         //queries
         .AddQueryType<RootQuery>()
-        //TODO .AddTypeExtension<VehiclesQuery>()
+        .AddTypeExtension<VehiclesQuery>()
         .AddTypeExtension<DriversQuery>()
 
         //TODO
         // .AddMutationType<RootMutation>()
         // .AddTypeExtension<VehiclesMutation>()
-        // //add subscriptions    
-        // .AddSubscriptionType<RootSubscription>()
-        // .AddTypeExtension<PositionSubscription>()
+        //add subscriptions    
+        .AddSubscriptionType<RootSubscription>()
+        .AddTypeExtension<PositionSubscription>()
         ;
 
 
