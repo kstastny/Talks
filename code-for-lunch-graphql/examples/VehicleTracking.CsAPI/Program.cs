@@ -19,10 +19,9 @@ builder.Services
         .AddQueryType<RootQuery>()
         .AddTypeExtension<VehiclesQuery>()
         .AddTypeExtension<DriversQuery>()
-
-        //TODO
-        // .AddMutationType<RootMutation>()
-        // .AddTypeExtension<VehiclesMutation>()
+        //mutations
+        .AddMutationType<RootMutation>()
+        .AddTypeExtension<VehiclesMutation>()
         //add subscriptions    
         .AddSubscriptionType<RootSubscription>()
         .AddTypeExtension<PositionSubscription>()

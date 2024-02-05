@@ -29,21 +29,9 @@ public class PositionSubscription : IDisposable, IAsyncDisposable
 
 
     private const string TopicName = "vehiclePositions";
-    private const double MinLat = 44.8948358;
-    private const double MaxLat = 52.5841061;
-    private const double MinLon = 4.9568123;
-    private const double MaxLon = 28.1767924;
 
-    private readonly Random random = new Random();
+    private readonly Positions positions = new Positions();
 
-    private VehiclePosition NextPosition(Guid vehicleId)
-    {
-        return new VehiclePosition(
-            vehicleId,
-            random.NextDouble() * (MaxLat - MinLat) + MinLat,
-            random.NextDouble() * (MaxLon - MinLon) + MinLon
-        );
-    }
 
     private void SendPosition(object obj)
     {
@@ -57,7 +45,7 @@ public class PositionSubscription : IDisposable, IAsyncDisposable
         var vehicles = await storage.GetVehicles(CancellationToken.None);
         var vehicle = vehicles.Head;
 
-        await topicEventSender.SendAsync(TopicName, NextPosition(vehicle.Id), CancellationToken.None);
+        await topicEventSender.SendAsync(TopicName, positions.NextPosition(vehicle.Id), CancellationToken.None);
     }
 
     public async IAsyncEnumerable<VehiclePosition> SubscribeToPositionStream(
@@ -68,7 +56,7 @@ public class PositionSubscription : IDisposable, IAsyncDisposable
         var vehicles = await storage.GetVehicles(cancellationToken);
         var vehicle = vehicles.Head;
 
-        yield return NextPosition(vehicle.Id);
+        yield return positions.NextPosition(vehicle.Id);
 
         var stream =
             await topicEventReceiver.SubscribeAsync<VehiclePosition>(TopicName, cancellationToken);

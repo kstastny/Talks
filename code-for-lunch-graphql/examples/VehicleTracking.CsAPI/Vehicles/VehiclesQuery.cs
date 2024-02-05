@@ -10,8 +10,8 @@ public class VehiclesQuery
         [Service] Storage.Storage storage,
         CancellationToken cancellationToken)
     {
-        var Vehicles = await storage.GetVehicles(cancellationToken);
+        var vehicles = await storage.GetVehicles(cancellationToken);
 
-        return Vehicles.Select(VehicleOutput.OfVehicle).ToArray();
+        return vehicles.Select(VehicleOutput.OfVehicle).ToArray();
     }
 }
