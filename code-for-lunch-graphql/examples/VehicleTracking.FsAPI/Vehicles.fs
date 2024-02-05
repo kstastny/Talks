@@ -108,9 +108,6 @@ module OutputTypes =
         
         member val Surname = "" with get, set
         
-        [<GraphQLIgnore>]
-        member val VehicleIds : Guid array = [||] with get, set
-        
         [<GraphQLDescription("Vehicles assigned to this driver. Bosses may have more than one :)")>]
         member x.GetVehicles(
             [<Service>] storage: Storage,
@@ -177,7 +174,6 @@ module Queries =
 module Mutations =
     
     open InputTypes
-    open OutputTypes
     
     [<ExtendObjectType(nameof RootMutation)>]
     type VehiclesMutation() =
