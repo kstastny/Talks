@@ -1,0 +1,45 @@
+.reveal h1 {
+	/* color: #ffce43; */
+	color: #e7ad52;
+}
+
+.reveal h2 {
+	color: #e7ad52;
+}
+
+.reveal h3 {
+	color: #ffce43;
+}
+
+code {
+    /* color: #93a1a1; */
+    color: #ffce43;
+    background-color: transparent;
+}
+
+.reveal code {
+    font-weight: bold;
+}
+
+.reveal ul {
+    /* fix displaying list in Chrome */
+    display: inline;
+}
+
+#speaker-controls {
+    font-size: 14px;
+}
+
+
+p.reference {
+    font-size: 45%;
+}
+
+ul.too-much-text {
+    font-size: 60%;
+}
+
+.reveal strong {
+	color: #e7ad52; 
+	/* color: #a23; */
+}
